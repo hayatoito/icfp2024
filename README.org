@@ -1,0 +1,2142 @@
+* icfp 2024
+:PROPERTIES:
+:ID:       c1eedca3-7696-4945-a725-636bf459270d
+:END:
+Tasks
+- [X] Practice post
+- [X] mvp: solve lambdaman
+- [X] Implement ICFP expression
+- [X] mvp: solve spaceship
+
+** Tasks
+https://icfpcontest2024.github.io/task.html
+
+** Lang
+https://icfpcontest2024.github.io/icfp.html
+
+*** echo service
+
+Test string-to-int(negative int)
+
+B. # concat
+S%#(/}  # "echo "
+U$  # int-to-string
+U-  # negate
+I"  # number
+
+echo int-to-string(-1)
+
+#+begin_src shell
+./target/release/icfp2024 encode <(echo "echo ")
+#+end_src
+
+#+RESULTS:
+:results:
+S%#(/}
+:end:
+
+# Time limit exceeded
+#+begin_src shell
+my-make post_icfp ./comm/test-int-to-string.txt
+#+end_src
+
+#+RESULTS:
+:results:
+e
+
+You scored some points for using the echo service!
+
+:end:
+
+** Communication Channel
+https://boundvariable.space/communicate
+
+Web interface: https://icfpcontest2024.github.io/communicate.html
+
+- [X] HTTP Post
+- [X] Authorization header
+- [ ] must not exeed 1MB (1048576 bytes)
+- [ ] at most 20 message per minute
+** curl
+#+begin_src shell
+url=https://boundvariable.space/communicate
+hello="S'%4}).$%8"
+header="Authorization: $(my-keyring icfp2024)"
+echo -n $hello | curl -H $header -d @- $url
+#+end_src
+
+#+RESULTS:
+:results:
+SB%,,/}!.$}7%,#/-%}4/}4(%}M#(//,}/&}4(%}</5.$}P!2)!",%_~~<%&/2%}4!+).'}!}#/523%j}7%}35''%34}4(!4}9/5}(!6%}!},//+}!2/5.$l}S/5e2%}./7},//+).'}!4}4(%}u).$%8wl}N/}02!#4)#%}9/52}#/--5.)#!4)/.}3+),,3j}9/5}#!.}53%}/52}u%#(/w}3%26)#%l}@524(%2-/2%j}4/}+./7}(/7}9/5}!.$}/4(%2}345$%.43}!2%}$/).'j}9/5}#!.},//+}!4}4(%}u3#/2%"/!2$wl~~;&4%2},//+).'}!2/5.$j}9/5}-!9}"%}!$-)44%$}4/}9/52}&)234}#/523%3j}3/}-!+%}352%}4/}#(%#+}4()3}0!'%}&2/-}4)-%}4/}4)-%l}C.}4(%}-%!.4)-%j})&}9/5}7!.4}4/}02!#4)#%}-/2%}!$6!.#%$}#/--5.)#!4)/.}3+),,3j}9/5}-!9}!,3/}4!+%}/52}u,!.'5!'%y4%34wl~
+:end:
+
+** Problems
+*** get index
+#+begin_src shell
+entry="S'%4}).$%8"
+my-make send_and_decode $entry
+#+end_src
+
+#+RESULTS:
+:results:
+Hello and welcome to the School of the Bound Variable!
+
+Before taking a course, we suggest that you have a look around. You're now looking at the [index]. To practice your communication skills, you can use our [echo] service. Furthermore, to know how you and other students are doing, you can look at the [scoreboard].
+
+Once you are ready, please progress to one of the courses that you are currently enrolled in:
+
+ * [lambdaman]
+ * [spaceship]
+ * [3d]
+ * [efficiency]
+
+After passing some tests, you may be admitted to other courses, so make sure to check this page from time to time. In the meantime, if you want to practice more advanced communication skills, you may also take our [language_test].
+
+:end:
+
+*** scoreboard
+:PROPERTIES:
+:ID:       0899c34c-5458-43bd-9ff0-72d4ddccabea
+:END:
+**** [2024-06-30 Sun]
+#+begin_src shell :results org
+my-make post ./comm/scoreboard.txt
+#+end_src
+
+*** DONE language_test
+CLOSED: [2024-06-30 Sun 13:04]
+
+#+begin_src shell :results org
+s="get language_test"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Self-check OK, send `solve language_test 4w3s0m3` to claim points for it
+#+end_src
+
+#+begin_src shell :results org
+s="solve language_test 4w3s0m3"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Correct, you solved hello4!
+
+#+end_src
+
+*** echo
+#+begin_src shell :results org
+s="get echo"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+The School of the Bound Variable provides a special echo service for you. If you send an ICFP expression evaluating to:
+
+```
+echo <some text>
+```
+
+it will respond with `<some text>`.
+
+Hint: you can use this to validate the Macroware Insight evaluator has the expected behavior. Of course the usual limitations still apply.
+
+#+end_src
+
+#+begin_src shell :results org
+s="echo hello"
+my-make -f Make.zsh encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+hello
+
+You scored some points for using the echo service!
+
+#+end_src
+*** lambdaman
+**** Description
+#+begin_src shell :results org
+s="get lambdaman"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Welcome to the Lambda-Man course.
+
+It was the year 2014, and many members of our community worked hard to control Lambda-Man. Now, ten years later, this wonderful event is still memorized by holding a small Lambda-Man competition.
+
+This course will teach you how to optimally control Lambda-Man to eat all pills. There is no fruit involved (neither low-hanging nor high-hanging), and even better: no ghosts! The input to each problem is a simple rectangular grid such as the following:
+
+```
+###.#...
+...L..##
+.#######
+```
+
+The grid contains exactly one `L` character, which is the starting position of Lambda-Man. There will be one or more `.` characters indicating the locations of pills to be eaten, and `#` characters are walls. The outside boundary of the grid is considered to consist of walls as well.
+
+A solution should be a string of `U`, `R`, `D` and `L` characters (up, right, down, left, respectively) indicating the path to take. For example, a possible solution to the above example grid is the following path:
+```
+LLLDURRRUDRRURR
+```
+When Lambda-Man is instructed to move into a square containing a wall, nothing happens and the instruction is skipped. Your solution may consist of at most `1,000,000` characters.
+
+The following levels are available:
+,* [lambdaman1] Best score: 33.
+,* [lambdaman2] Best score: 44.
+,* [lambdaman3] Best score: 58.
+,* [lambdaman4] Best score: 176.
+,* [lambdaman5] Best score: 159.
+,* [lambdaman6] Best score: 73.
+,* [lambdaman7] Best score: 181.
+,* [lambdaman8] Best score: 136.
+,* [lambdaman9] Best score: 114.
+,* [lambdaman10] Best score: 220.
+,* [lambdaman11] Best score: 1615.
+,* [lambdaman12] Best score: 1615.
+,* [lambdaman13] Best score: 1605.
+,* [lambdaman14] Best score: 1593.
+,* [lambdaman15] Best score: 1609.
+,* [lambdaman16] Best score: 287.
+,* [lambdaman17] Best score: 231.
+,* [lambdaman18] Best score: 4361.
+,* [lambdaman19] Best score: 1442.
+,* [lambdaman20] Best score: 6489.
+,* [lambdaman21] Best score: 9194.
+
+To submit a solution, send an ICFP expression that evaluates to:
+
+```
+solve lambdamanX path
+```
+
+Your score is number of bytes that the ICFP expressions consists of (i.e. the size of the POST body), so a lower score is better.
+
+#+end_src
+
+**** DONE lambdaman 1
+CLOSED: [2024-06-29 Sat 12:56]
+
+#+begin_src shell :results org
+s="get lambdaman1"
+echo $s
+my-make -f Make.zsh encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman1
+Saaalalll~lllFllaa~laaaaaaa~
+#+end_src
+
+
+#+begin_src shell :results org
+s="get lambdaman1"
+echo $s
+my-make -f Make.zsh encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman1
+###.#...
+...L..##
+.#######
+
+#+end_src
+
+Manually solved:
+#+begin_src shell :results org
+my-make -f Make.zsh lambdaman_send 1
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman1 LLLDURRRUDRRURR
+Correct, you solved lambdaman1 with a score of 33!
+
+#+end_src
+
+**** DONE lambdaman2
+CLOSED: [2024-06-29 Sat 12:58]
+#+begin_src shell :results org
+s="get lambdaman2"
+echo $s
+my-make -f ~/src/icfp2024/Make.zsh encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman2
+L...#.
+#.#.#.
+##....
+...###
+.##..#
+....##
+
+#+end_src
+
+Manually solved:
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 2
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman2 RDURRDDRRUUDDLLLDLLDDRRRUR
+Correct, you solved lambdaman2 with a score of 44!
+
+#+end_src
+
+**** DONE lambdaman3
+CLOSED: [2024-06-30 Sun 11:21]
+#+begin_src shell :results org
+s="get lambdaman3"
+echo $s
+my-make -f encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman3
+......
+.#....
+..#...
+...#..
+..#L#.
+.#...#
+......
+
+#+end_src
+
+Manual solving:
+
+#+begin_example
+#+begin_src org
+get lambdaman3
+x.....
+.#....
+..#...
+RR.#..
+U #L#.
+U#.DR#
+U..LDR
+
+#+end_src
+#+end_example
+
+DRDRLLLUDLL UUURDURLULUURRRRRDLLLRDRRDLRD
+
+#+begin_src shell :results org
+my-make -f Make.zsh lambdaman_send 3
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman3 DRDRLLLUDLLUUURDURLULUURRRRRDLLLRDRRDLRD
+Correct, you solved lambdaman3 with a score of 58!
+
+#+end_src
+
+**** DONE lambdaman4
+CLOSED: [2024-06-29 Sat 14:51]
+#+begin_src shell :results org
+s="get lambdaman4"
+echo $s
+my-make -f ~/src/icfp2024/Make.zsh encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman4
+#####################
+#...#.#.........#...#
+#.###.#.#####.###.###
+#...#.#.....#.......#
+###.#.#.###.#########
+#.#....L..#.#.......#
+#.#####.###.#.###.###
+#.#.#...#.......#...#
+#.#.#######.#######.#
+#.#...#.#...#.#.....#
+#.#.###.#.###.###.#.#
+#.....#...#.......#.#
+#.###.###.###.#####.#
+#.#.#...#...#...#...#
+###.#.#.#.#####.###.#
+#...#.#...#.....#...#
+#.###.#.#.#####.#####
+#.....#.#.....#.#...#
+#.###.#.#.#.#.#.#.###
+#.#...#.#.#.#.#.....#
+#####################
+
+#+end_src
+
+
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 4
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman4 RRLLDDLLRRUULLUUUUDDDDLLUULLUURRLLDDRRDDRRRRUUUURRRRRRRRLLDDRRRRRRLLUURRLLDDLLLLUULLLLLLDDRRRRDDDDLLRRDDLLDDLLUUDDRRDDRRLLDDDDDDUURRDDUURRDDUULLLLUULLDDDDUUUUUULLUULLUUUUDDRRLLDDLLDDUUUUUUUUDDDDDDRRRRDDDDDDDDLLRRUULLLLDDUUUURRUUDDLLDDRRRRUUUURRDDRRUUUUUURRUURRRRLLUURRRRRRLLDDRRDDDDDDLLRRDDLLRRUUUUUULLLLRRDDLLLLUUDDLLRRDDRRDDLLLLRRRRDDDDRRRRLLUURR
+Correct, you solved lambdaman4 with a score of 366!
+
+#+end_src
+
+**** lambdaman5
+#+begin_src shell :results org
+s="get lambdaman5"
+echo $s
+my-make -f encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman5
+.....########...
+....#...........
+...#..######....
+..#..#......#...
+.#..#...##...#..
+.#..#..#L.#...#.
+.#...#....#...#.
+..#...####...#..
+...#........#...
+....########....
+................
+
+#+end_src
+
+solved: DRLURDLLLUULRDLURURDURRRDRUDDDDURDLURUDRLDLUURUDDRUDLDLDLUDLLLLLULDUULDUUUDLURDDLUURURURURRRRRRRDRDRDRUDLUUDDRUUDDLUUUDDDRUUUDDDLUUUUDDDLUUDDRDRUUUUDDDDLUUUULDDDRDRDDDDDDLLLUDRUDRUDLLURUDDRUUDDRUUULDDDLLLLLLLLLLLULULULDURDDUULDDUURDDDUURDDUULULDDDUUUUUUUUUURDRUDDUURRLDLDLD
+
+
+#+begin_src shell :results org
+my-make -f Make.zsh lambdaman_send 5
+#+end_src
+
+**** DONE lambdaman6
+CLOSED: [2024-06-30 Sun 11:11]
+
+Takes time...
+#+begin_src shell :results org
+id=6
+echo "id: $id"
+my-make -f Make.zsh lambdaman_get_problem 6
+done
+#+end_src
+
+#+begin_src shell :results org
+s="get lambdaman6"
+echo $s
+my-make -f Make.zsh encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman6
+B. SF B$ B$ L" B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L# ? B= v# I" v" B. v" B$ v$ B- v# I" Sl I#,
+#+end_src
+
+#+begin_src shell
+a=''
+echo "${(l:199::R:)a}" > ./solution/lambdaman/6.txt
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
+
+#+begin_src shell :results org
+my-make -f Make.zsh lambdaman_send 6
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman6 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+Correct, you solved lambdaman6 with a score of 217!
+
+#+end_src
+
+**** lambdaman7
+#+begin_src shell :results org
+s="get lambdaman7"
+echo $s
+my-make -f Make.zsh encode_and_send_and_decode $s
+done
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman7
+############################
+#............##............#
+#.####.#####.##.#####.####.#
+#.####.#####.##.#####.####.#
+#.####.#####.##.#####.####.#
+#..........................#
+#.####.##.########.##.####.#
+#.####.##.########.##.####.#
+#......##....##....##......#
+######.##############.######
+######.##############.######
+######.##..........##.######
+######.##.###..###.##.######
+######.##.#......#.##.######
+#.........#......#.........#
+######.##.#......#.##.######
+######.##.########.##.######
+######.##..........##.######
+######.##.########.##.######
+######.##.########.##.######
+#............##............#
+#.####.#####.##.#####.####.#
+#.####.#####.##.#####.####.#
+#...##........L.......##...#
+###.##.##.########.##.##.###
+###.##.##.########.##.##.###
+#......##....##....##......#
+#.##########.##.##########.#
+#.##########.##.##########.#
+#..........................#
+############################
+
+#+end_src
+
+**** DONE lambdaman8
+CLOSED: [2024-06-29 Sat 14:54]
+#+begin_src shell :results org
+for i in {8..12}; do
+  s="get lambdaman$i"
+  echo $s
+  my-make -f ~/src/icfp2024/Make.zsh encode_and_send_and_decode $s
+done
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman8
+###################################################################################################
+#.................................................................................................#
+#.###############################################################################################.#
+#.#.............................................................................................#.#
+#.#.###########################################################################################.#.#
+#.#.#.........................................................................................#.#.#
+#.#.#.#######################################################################################.#.#.#
+#.#.#.#.....................................................................................#.#.#.#
+#.#.#.#.###################################################################################.#.#.#.#
+#.#.#.#.#.................................................................................#.#.#.#.#
+#.#.#.#.#.###############################################################################.#.#.#.#.#
+#.#.#.#.#.#.............................................................................#.#.#.#.#.#
+#.#.#.#.#.#.###########################################################################.#.#.#.#.#.#
+#.#.#.#.#.#.#.........................................................................#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#######################################################################.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.....................................................................#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.###################################################################.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.................................................................#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.###############################################################.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.............................................................#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.###########################################################.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.........................................................#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#######################################################.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.....................................................#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.###################################################.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.................................................#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.###############################################.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.............................................#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.###########################################.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.........................................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#######################################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.....................................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.###################################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.................................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.###############################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.............................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.###########################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.........................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#######################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.....................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.###################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.###############.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.............#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.###########.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.........#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#######.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.....#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.###.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#L#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#...#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#####.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.......#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#########.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#...........#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#############.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#...............#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#...................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#####################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.......................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#########################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#...........................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#############################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#...............................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#################################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#...................................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#####################################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.......................................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#.#########################################.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#...........................................#.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#.#############################################.#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#...............................................#.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#.#################################################.#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#...................................................#.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.#####################################################.#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#.......................................................#.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#.#########################################################.#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#...........................................................#.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#.#############################################################.#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#...............................................................#.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#.#################################################################.#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#...................................................................#.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.#####################################################################.#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#.......................................................................#.#.#.#.#.#.#.#
+#.#.#.#.#.#.#########################################################################.#.#.#.#.#.#.#
+#.#.#.#.#.#...........................................................................#.#.#.#.#.#.#
+#.#.#.#.#.#############################################################################.#.#.#.#.#.#
+#.#.#.#.#...............................................................................#.#.#.#.#.#
+#.#.#.#.#################################################################################.#.#.#.#.#
+#.#.#.#...................................................................................#.#.#.#.#
+#.#.#.#####################################################################################.#.#.#.#
+#.#.#.......................................................................................#.#.#.#
+#.#.#########################################################################################.#.#.#
+#.#...........................................................................................#.#.#
+#.#############################################################################################.#.#
+#...............................................................................................#.#
+#################################################################################################.#
+..................................................................................................#
+###################################################################################################
+#+end_src
+
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 8
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman8 DDLLUUUURRRRDDDDDDLLLLLLUUUUUUUURRRRRRRRDDDDDDDDDDLLLLLLLLLLUUUUUUUUUUUURRRRRRRRRRRRDDDDDDDDDDDDDDLLLLLLLLLLLLLLUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
+Correct, you solved lambdaman8 with a score of 4917!
+
+#+end_src
+
+**** DONE lambdaman9
+CLOSED: [2024-06-30 Sun 12:22]
+#+begin_src shell :results org
+s="get lambdaman9"
+my-make encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+B$ L+ B. B. SF B$ B$ v+ Sl IR B$ B$ v+ B. S~ B$ B$ v+ Sl IS IR L" B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L# ? B= v# I" v" B. v" B$ v$ B- v# I"
+#+end_src
+
+#+begin_example
+[2024-06-30T03:14:07Z DEBUG icfp2024::lang] parse_and_eval: B$ L+ B. B. SF B$ B$ v+ Sl IR B$ B$ v+ B. S~ B$ B$ v+ Sl IS IR L" B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L# ? B= v# I" v" B. v" B$ v$ B- v# I"
+#+end_example
+
+#+begin_example
+% mm encode_and_send_and_eval "get lambdaman9"
+received: B$ L+ B. B. SF B$ B$ v+ Sl IR B$ B$ v+ B. S~ B$ B$ v+ Sl IS IR L" B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L# ? B= v# I" v" B. v" B$ v$ B- v# I"
+"L.................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+..................................................
+.................................................."
+my-make encode_and_send_and_eval "get lambdaman9"  148.38s user 0.46s system 99% cpu 2:29.77 total
+#+end_example
+
+
+Manually solved
+
+#+begin_src shell
+a=''
+rm ./solution/lambdaman/9.txt
+touch ./solution/lambdaman/9.txt
+for i in {1..25}; do
+  echo -n "${(l:49::R:)a}"D >> ./solution/lambdaman/9.txt
+  echo -n "${(l:49::L:)a}"D >> ./solution/lambdaman/9.txt
+done
+  echo >> ./solution/lambdaman/9.txt
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
+
+#+begin_src shell :results org
+my-make lambdaman_send 9
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman9 RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLD
+Correct, you solved lambdaman9 with a score of 2518!
+
+#+end_src
+
+**** lambdaman10
+#+begin_src shell :results org
+s="get lambdaman10"
+my-make -f ~/src/icfp2024/Make.zsh encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+B. SF B$ B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L" L# ? B= v# I;Y S B. ? B= B% v# IS I! S~ S B. ? B= B% v# I, I! Sa Sl B$ v" B+ v# I" I"
+#+end_src
+
+#+begin_src shell :results org
+./target/release/icfp2024 eval 'B. SF B$ B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L" L# ? B= v# I;Y S B. ? B= B% v# IS I! S~ S B. ? B= B% v# I, I! Sa Sl B$ v" B+ v# I" I"'
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+#+end_src
+
+**** DONE lambdaman11
+CLOSED: [2024-06-29 Sat 14:54]
+#+begin_src shell :results org
+s="get lambdaman11"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+#####################################################################################################
+#.#.....#.......#.#.......#...#...#.......#...#.......#.#.......#...#.....#.....#.....#.......#.....#
+#.###.###.#####.#.###.###.#.###.#.#.#######.#######.###.#.###.###.#####.#.###.#######.#.#.#########.#
+#...#.#.....#.....#.....#...#...#.....#.........#.#.......#...#.........#.....#...#.#...#.#.........#
+#.###.###.###.#.#########.#.#.###.#.#.#.###.#.###.###.#################.#######.#.#.###.###.#.###.###
+#.#.#.....#...#...#.#.#...#.#.#...#.#.#...#.#.#...........#.....#.......#.#.#...#.#.........#...#...#
+#.#.###.###.#######.#.#.#######.#####.#.#.###.###.#.#####.#####.#.###.#.#.#.###.#.#.#####.#####.#####
+#.......#.#.#.....#.........#.....#...#.#...#...#.#.#...#.#...#.#...#.#.#.....#.#.....#.....#.#.....#
+#####.#.#.###.#.###.#.###.#.#.#######.#.#.###.###.#.#.#######.#.###.#####.###.###.#.#.#.###.#.#.###.#
+#...#.#.#...#.#...#.#...#.#.......#.#.#.#.#.#...#.#.#.......#.......#.....#...#.#.#.#.#.#.....#.#.#.#
+###.###.#.###.#####.#######.#.#####.#.#.###.#######.#####.#.#####.#.#.#.#####.#.#.###########.#.#.###
+#...#.........#.........#.#.#.#...#.........#.........#.#.#...#...#...#...#...#.#...#...#.....#.....#
+###.#.#.#.###.#####.#.###.###.###.###.#############.###.#####.###.###.###.#.###.###.#.###.#########.#
+#.#...#.#.#...#.....#.#.....#.#.#...#.....#...#...#.#.............#...#...#.#.....#.#...#.........#.#
+#.###.###.###.###.#####.###.#.#.###.###.###.#####.#.#.###.#############.###.#####.#.#.###.#####.#####
+#.....#.....#.........#.#.....#...#.........#.#.#...#...#.......#...#.#.#...#...#.....#.....#.......#
+#.#.###.###.#.#.#################.#.#####.###.#.#.#.#.#####.###.###.#.#######.###.#####.#.###.###.###
+#.#.#.#.#...#.#...#...#...#...#.......#...#.#...#.#.#.....#.#...#.....#...........#.....#.#.#...#.#.#
+#.###.###.#.#######.###.#####.#.###.#.#.###.#.###.#############.###.###.###.###.###########.#.#.###.#
+#.#.....#.#.#.....#.#.......#.#...#.#.#.#...#.......#.#.....#.#.#.....#.#.....#.#.......#...#.#.#.#.#
+#.###.#######.#####.#.###.###.#.###.#.#####.#.#.#####.###.###.#.#.#######.#####.#.###.###.###.#.#.#.#
+#.#...#...#.....#.#...#...#.#.#.#...#.#.#.....#.#...#.....#...#.#.....#...#.......#.........#.#.....#
+###.#.###.#.#.###.#.#.#.#.#.#.###.#####.###.#.#####.###.#.#.###.#####.###.#.###.#######.###########.#
+#...#.#.#...#...#...#.#.#...#.#.#.#.........#.#...#...#.#.............#...#.#.......#.....#.....#.#.#
+###.###.#.###.#####.#######.#.#.#.#######.###.#.#####.#.#.#####.###.#.#.###########.#########.#.#.###
+#...#.#...#.#.#.#...#.....#.....#.......#...#.#...#.....#.#...#...#.#.#.#...#.#.#.....#.....#.#.....#
+#.###.#.###.#.#.#.#####.###.#####.#.#.#####.###.#####.#####.#######.#######.#.#.#####.#.#.###.#.#.#.#
+#.....#.#.#...#.#.....#...#...#.#.#.#.......#...............#.....#...#.....#.........#.#...#.#.#.#.#
+#.###.###.###.#.#.#.###.#####.#.#.#######.#.###########.###.#.#########.#.#########.#.#.###########.#
+#.#.#...#.#.......#.#...#...#L#.......#.#.#.....#...#...#.#.#.#...#.#...#...#.#.....#.....#.....#.#.#
+#.#.###.#.#####.###.###.###.#.#.###.###.###########.#.###.###.###.#.#.#######.###.###.#.#####.###.#.#
+#.#...........#.#.....#.#.#...#...#.#...#.......#.#.#...........#.....#.#.......#.#...#.#.....#.#...#
+###.###.###.###.###.###.#.#.###.#####.#.#.#.#####.#.#.#########.#.###.#.#.#.#.#####.#########.#.#.###
+#...#...#.#...#.#...#.#.#.....#.....#.#.#.#.............#.#.....#.#.#.....#.#.#.........#.#.....#...#
+#######.#.#########.#.#.###.#####.###.###.#######.#####.#.#####.###.#.###.###.#.###.#.###.###.#.#.###
+#.....#.........#...#.......#...#.#.......#.#...#.#...........#.#.....#.....#.#.#.#.#.....#...#.....#
+###.###.###.#.###.#.#.#####.###.#.#####.###.###.#.###.#.#.#.#######.#####.###.###.#.###.#####.#.#####
+#.#...#.#...#.#...#.#.#...#...#.......#.....#.......#.#.#.#...#.......#.....#.#...#...#...#.#.#.....#
+#.#.#######.###.#########.#.###.#####.###.#.#.#######.#######.#.#.#.#######.#####.#.#.#.#.#.#######.#
+#.#.......#.....#.....#.....#...#.......#.#.#...#.....#.#...#...#.#.....#.#.#...#...#.#.#...#.#...#.#
+#.#.#.###.#####.#.#######.#####.#############.#########.###.#.#########.#.#####.#.###.#.#####.#.#.#.#
+#.#.#.#.#.#.....#.....#.....#.................#...#.....#.........#.........#...#.#...#.........#...#
+#.###.#.#.#.#.###.###.###############.###.#####.#.#####.#.#.###.#########.###.#####.###.###.#.#######
+#...#.#.....#...#.#...#.#.........#.....#...#.#.#...#...#.#.#...#...#...#.#.#.#.#.#.#.#.#...#...#...#
+#.###.###.###.###.###.#.#.###.#.###.#######.#.#.#.#.###.#.#######.#.#.#.###.#.#.#.###.#.#####.#.#.###
+#.......#.#...#.#...#...#.#.#.#.........#.....#.#.#...#...#...#.#.#...#.#.......#.#.#.......#.#.#...#
+#.###.###.###.#.#.#####.###.#.###.#.#.###.###########.#.#####.#.#.###.###.#####.#.#.#.#####.###.#.#.#
+#...#.#.#.#...#...#.....#.#...#...#.#...#.#.........#...#...........#.....#.#...#.........#...#...#.#
+#.#.###.###.#######.#####.#.###############.#.#.###.#.###.#########.#######.#.#########.###.#####.###
+#.#.#.........#.#.....#.#.#.#.#...#...#.#.#.#.#...#...........#.#...#.#...........#...#...#...#.....#
+#####.#########.#.###.#.#.#.#.#.#.###.#.#.#.###############.###.#.###.#####.#.#.#####.#.#######.#.###
+#.........#.......#...#.......#.#.#...#.......#.....#.....#.#...#.....#.#...#.#.#...........#...#.#.#
+###.###.#######.###.#####.#####.#.#.#.###.#.###.###.#.#####.#.#####.#.#.#.#.#####.#####.#.#.#####.#.#
+#.....#.#.#.......#...#.#.....#.#...#...#.#...#.#.#.#.....#.#...#...#...#.#.......#.....#.#...#.....#
+###.#.###.#.###.#.#####.#.#########.###########.#.###.#########.#######.#########.#####.###########.#
+#...#.......#...#.....#.#.#.#.#.#.......#...#...#...#.....#...#.#.#...#.......#...#...#.#.......#...#
+#.#.#########.#.#.#.###.#.#.#.#.#.#.#####.#####.###.###.#####.#.#.###.#.###.###.#.#.#.###.###.###.#.#
+#.#...#.#.#...#.#.#.........#.#.#.#.#...#...........#.....#.#.#...#...#...#.#.#.#...#...#.#.#.#...#.#
+#.#####.#.###.#.#######.#.#.#.#.#.###.#######.###.###.#.#.#.#.#.#####.#######.#.###########.#.#####.#
+#.#.#.#.......#.#.......#.#.#.#...#.......#.....#...#.#.#.#.#...#.#.......#...#.#.....#.#.....#.....#
+###.#.#####.###########.###.#.#.#.#######.#.###.#.###.#.###.#.###.###.###.#.#.###.#####.#####.#.#.###
+#.....#.#.#...#.....#...#.#.....#.#.....#...#...#.#.#.#.....#.......#...#...#...#.#.......#.....#.#.#
+#.#####.#.#.#.#.###.###.#.#.#######.#####.#####.###.#.#######.#######.#.#####.###.#######.#####.###.#
+#.#...#.#...#...#...#.....#.....#.#.#.#.......#.....#...#.....#...#...#.#.#.#...#...#.#.....#.......#
+#.###.#.#.#.#.#####.#.#.###.#####.#.#.###.#.###.#######.#.#.#####.#####.#.#.#####.###.#.#.###.#.###.#
+#.......#.#.#.#.#...#.#.#.......#.#.......#.#.#.......#...#.#.#.#.#...#...............#.#.#...#...#.#
+#.#####.#.#####.#.#####.#.#.#####.###.#######.###.#.###.#.###.#.#.###.#####.#####.#######.###.#######
+#.#.#.#.........#...#.#.#.#...#.....#.#...#.....#.#...#.#.#...#.#...#...#...#.#...#.......#.......#.#
+###.#.#.#####.#######.###.###.#.#####.#.###.###.#.#.###.###.#.#.#.#.###.###.#.#######.###.#.#.###.#.#
+#.........#.....#.......#.#...#...........#...#...#...#...#.#.....#.#.........#.#.....#.#...#...#...#
+###.#####.#.#.#####.#####.#############.###.###.#####.#.#########.#########.###.#####.#.#.#######.#.#
+#...#.....#.#.#...#.#...#.....#...#.#.#...#.#.....#...#.........#...#.#.#...#.#.#.#.#.#...#.#.#.#.#.#
+###.###.###.#.###.#.#.###.#.#####.#.#.#########.###.###.###.###.###.#.#.###.#.#.#.#.#######.#.#.#.#.#
+#.#.#...#...#.#...#.....#.#.#.....#.....#.#...#.#.#.....#...#...#.......#.....#.#.....#.#.#.......#.#
+#.#####.#.#######.#.#.###.#.#.#.#.#####.#.#.#####.#.#########.#######.#####.###.#.#.#.#.#.#.#####.###
+#.....#.#.#...#...#.#.....#...#.#...#.#...#...#.#...#...........#.#.....#...#...#.#.#.#.#...#.#...#.#
+#.#.#####.#.###.###.#.#.#####.#######.#.###.###.#.#######.#####.#.#.#######.#.#####.#.#.#####.#.###.#
+#.#...#.#.#.#.#.#...#.#.#.............#.#.....#.....#.#...#.....#.#.....#.#...#.#.#.#...#.#...#.....#
+#.#.#.#.#.#.#.#.#####.###.#####.#######.#####.#.#####.#####.###.#.###.#.#.#.###.#.#####.#.###.#.###.#
+#.#.#.#...#...#.#.....#.#...#...#.#.#...#.....#...#.#.#.......#.....#.#...........#.......#.......#.#
+#.###.###.###.#.#.#####.#####.#.#.#.###.###.#####.#.#.#.###.#.#######.###.###.#.###.#####.#.###.###.#
+#...#.#.#.#.......#.......#.#.#.#...............#...#.#.#...#...#.#...#.....#.#.#.#.#.#...#...#.#...#
+#.#.###.#.#######.#.###.#.#.#.###.#########.#.#######.#######.###.#####.#########.###.###.#######.###
+#.#.#.#...#...#...#...#.#.#...#.#.#.#...#...#.#.....#.#...#.#.....#.#...#.#.......#.#.#.#.#.....#.#.#
+###.#.#######.#.#.#######.#####.#.#.###.#.###.#.#.#.#.#.###.#.#.###.###.#.#####.#.#.#.#.#.#.###.###.#
+#.......#.#.#...#...#.#.....#.....#.#.......#.#.#.#.....#.....#.......#.........#.#.........#.....#.#
+#####.###.#.#####.###.#.###.###.###.#####.#####.#####.#.###.###.###.#.#.#######.#.#.#.###.#######.#.#
+#.....#.#.....#...#...#...#...#.#.........#.....#.....#...#...#.#...#.....#...#.#...#...#.#.#.#.#...#
+#####.#.#.#.#.#.#####.#.#.#######.#.###.#.#.###.#.#.#.#.###.#####.#########.#.#####.#####.#.#.#.#.#.#
+#...#.#...#.#...#.......#.#.......#.#.#.#.#...#.#.#.#.#.....#...#...........#.#...#.#.........#...#.#
+#.#.#.#.#.#.#.#.#.#.###.#########.###.#.#.###.###.#####.#####.#.#.#.#.#.#######.#######.#.###########
+#.#.....#.#.#.#...#...#...#...#.......#.#.#.....#.#.#.....#...#.#.#.#.#...#.#.......#...#.#...#.#...#
+#####.###.#####.#.#########.###.#.#.#########.#####.###.#.#.#.#.#####.###.#.###.###.#.#.###.#.#.#.###
+#...#.#...#...#.#...#.....#.....#.#.......#.......#.#...#...#.#.#.#...#...........#.#.#.#...#.......#
+#.#.###.#####.#.#######.###.#######.#.#.#.#####.###.#######.#.###.#####.#.###.#####.#######.#####.#.#
+#.#.....#.#.......#.........#.......#.#.#...#.........#.....#...#...#...#.#.#...#.........#...#...#.#
+###.###.#.#######.#.###.#######.#.#.#.###.#.#######.###.#.#.###.#.#########.#.#.###.#####.#####.###.#
+#...#...#...#...#...#...#.#.....#.#.#...#.#.........#...#.#...#.#...#.........#...#.#.#.#.#.....#.#.#
+###.#.###.###.#.###.#####.#######.#.#.###.###.#######.###########.#.#.###.#######.#.#.#.#.###.#.#.###
+#...#.........#.#...........#.....#.#.#.....#...#...............#.#...#.....#.....#...#.......#.....#
+#####################################################################################################
+
+#+end_src
+
+#+begin_src shell :results org
+my-make lambdaman_send 11
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman11 DDLLUULLRRDDDDRRLLLLUUDDRRDDDDRRLLDDLLLLRRDDRRLLLLRRUUUULLRRDDRRUUUULLLLLLDDUUUUDDRRUUUUUULLRRUURRLLUURRLLLLRRDDDDDDDDDDRRRRUUUURRUUUULLUURRRRUUDDLLUUUUUUUULLRRDDDDDDDDLLUUUUDDLLUULLDDUURRUURRLLLLUURRLLDDLLDDDDUULLUUUURRLLDDDDDDLLUUDDRRDDLLDDDDLLDDDDUUUUUUUUDDDDLLLLRRUULLUUDDRRUUUURRLLUURRLLUURRRRLLLLDDLLDDLLUULLRRDDDDLLDDUUUUDDRRUURRUURRDDDDDDDDRRRRUURRRRLLDDDDRRLLLLRRDDLLRRDDDDUULLDDLLDDLLLLUULLRRUURRDDUURRLLLLLLUUDDLLDDUUUULLRRUURRUUUUDDDDRRRRLLDDRRLLUULLLLLLLLUUDDDDLLRRUURRRRUULLUUUUDDLLLLDDDDUUUUUURRUULLRRUURRDDUUUUUUDDRRLLLLRRDDLLDDDDLLDDRRRRDDRRDDDDDDRRRRDDDDRRRRDDLLLLDDLLDDDDUUUULLUUDDRRUUUULLLLLLDDUUUURRLLUURRLLLLRRDDDDRRDDDDDDDDUURRLLLLLLDDDDUURRDDUULLUUUURRLLUUUUUUDDDDDDDDRRRRUUUUUURRRRDDDDRRUURRDDRRLLDDLLRRDDLLDDRRLLLLLLUUDDLLDDRRDDUURRLLLLLLLLRRDDLLRRDDDDRRLLUULLDDDDUUUURRUURRDDRRRRUUDDRRUURRRRUUUUDDLLLLRRRRRRUURRRRDDLLDDRRLLUURRUULLUURRRRUUUUDDLLUULLRRUULLLLUURRRRLLLLDDDDDDRRLLDDLLUUDDRRUUUUUURRRRDDDDRRDDLLLLDDLLDDLLDDDDDDDDUUUULLDDLLRRDDLLLLUUDDLLUUDDRRRRDDRRDDDDUURRUURRRRDDLLRRDDLLDDRRLLUURRUUUULLLLDDLLUULLDDDDUULLUUDDDDDDLLDDLLUUDDLLUUDDLLRRDDDDUULLRRUURRRRRRDDLLLLRRDDDDUULLRRUURRUULLUUUUUUUUDDDDLLUULLRRDDLLLLDDUUUUUURRUUDDRRUUDDLLLLDDDDRRRRRRDDRRRRRRRRUUDDLLDDRRLLDDDDUUUULLDDDDLLDDDDDDLLUUDDRRDDDDLLUUDDRRUUUUUUUUUURRUUUURRUULLLLUUUURRUUUURRUUUURRUURRDDDDUURRRRLLDDRRRRUUUUDDDDDDLLLLLLRRRRRRDDLLRRDDDDDDUUUURRUUDDLLLLDDUURRUUUUUURRDDUURRUUDDDDDDRRUUUUUUDDDDDDRRUUUUUUDDDDRRDDUUUUUURRDDUURRRRLLLLUUUURRDDRRLLUUUULLRRDDLLDDLLUUUULLDDDDUUUURRDDDDRRDDLLDDDDLLDDLLLLDDRRRRLLLLDDRRRRLLLLDDRRDDLLRRUULLUULLDDDDDDRRRRLLDDDDRRUURRDDUURRDDRRLLUUUULLRRDDLLLLDDDDLLLLDDRRLLUURRRRRRRRRRRRUUDDLLLLLLDDDDUULLDDDDLLUUDDRRUUUURRUULLUULLUUUULLDDDDLLDDUULLUURRLLUURRLLDDLLDDDDLLRRUUUUUUUULLRRRRUUDDRRLLLLDDDDRRDDDDDDLLLLDDLLLLLLRRUUUUDDLLUUUURRLLDDDDRRDDRRUUUUUURRUULLRRUULLRRDDDDLLDDDDDDRRDDLLDDLLUULLRRDDRRUURRDDRRLLDDLLDDLLDDUUUULLUUDDDDDDUUUULLUUDDDDDDDDLLDDLLLLDDLLRRDDLLRRUUUUUULLDDUURRDDRRRRDDLLDDRRRRUUUUDDRRLLDDRRRRUURRDDUULLDDLLLLLLLLUURRUUUURRUUUULLUUDDDDLLDDUULLUULLDDUURRDDRRUUUULLLLRRRRUUUUDDRRLLLLLLRRUUUULLDDUUUUUUUUUUDDRRRRLLDDDDUURRDDDDUUUULLUULLDDDDDDRRDDDDRRDDDDDDRRUURRUURRRRDDRRDDRRDDRRLLUUUURRDDRRLLUURRUUUUDDLLRRDDRRDDRRLLUUUURRDDUULLUURRRRDDRRLLUULLUUUULLDDUUUUDDLLLLDDRRLLUURRRRRRDDDDLLDDDDLLLLLLDDLLDDDDLLLLRRUULLRRDDRRRRDDRRDDLLRRRRRRRRUUDDRRLLLLLLLLUUUURRRRDDLLRRUUUURRLLLLRRDDRRRRUUUURRLLDDRRRRUURRDDUUUULLLLLLRRRRRRUURRDDUUUUUUDDDDRRRRDDDDUUUURRDDDDUUUUUURRLLLLLLRRUULLRRDDRRUURRUURRRRLLDDDDUUUULLUULLRRRRUULLLLRRUURRLLUURRLLDDDDRRDDLLDDLLLLUULLRRUUUURRUUDDLLUULLUUDDLLUUDDRRRRDDDDDDDDLLLLUUDDLLUUDDDDDDLLDDUUUUDDLLRRRRUUUURRRRRRRRRRDDLLDDDDLLLLLLLLDDDDRRRRUUDDLLDDDDDDDDUUUULLDDDDLLLLRRRRUUUULLLLRRDDLLLLRRRRUURRRRUURRDDDDDDUURRLLUUUURRDDUURRDDDDDDRRLLLLRRUUUURRDDRRDDRRLLUURRRRRRUURRLLUUUUDDDDLLLLLLRRUURRLLLLLLRRUURRLLLLRRUULLUURRRRDDUUUUUURRDDUURRDDRRUUUUUUUUDDDDDDDDDDDDUULLDDUULLDDDDUUUURRRRUURRUURRLLDDDDRRLLDDDDLLRRDDLLRRUURRDDRRUURRDDDDRRDDUULLUUUUUURRDDDDUUUULLDDLLDDDDDDRRLLUULLDDUULLDDLLDDLLLLRRRRRRRRRRRRRRLLLLLLLLLLUURRUURRRRUULLUULLUURRRRUURRLLUUUUDDLLRRRRUURRRRUUDDLLDDDDUURRRRUUDDRRDDRRRRLLUURRUUDDRRRRRRDDUUUULLLLRRRRRRUUDDDDDDRRDDUUUUUUDDRRDDRRLLUUUUUUDDDDRRUUDDRRDDDDDDUURRUUDDRRUUDDLLLLLLLLRRDDDDUULLDDUURRUURRUUUURRUURRRRDDLLRRRRDDDDLLUUDDRRUURRDDUUUUUUDDDDLLUULLUULLLLDDLLUUUULLRRUUUUDDLLLLLLDDUURRRRUUUUUUDDDDLLUUUULLUUDDDDDDUUUULLDDUUUUDDRRRRDDDDRRDDRRDDDDDDLLLLLLDDLLUUUULLDDLLLLLLLLUULLRRUURRRRLLUUUUDDLLUULLDDDDLLRRUUUULLUURRRRLLUUUUDDRRUUDDLLLLLLRRUULLUUUURRDDUULLUUUULLRRDDDDDDLLUUUUDDDDLLUUUUDDLLDDUURRDDRRRRDDRRDDRRDDLLDDRRRRDDRRRRRRDDUURRDDUUUUDDRRUUDDLLLLLLUURRUURRUUUUUUDDDDDDLLDDLLUULLRRUULLRRRRUUDDLLUULLRRUURRUUDDLLLLLLLLRRUULLUULLRRDDRRDDRRRRUULLRRUUUUDDRRRRRRDDLLRRUURRRRUUDDLLLLUURRLLUUUURRRRLLLLDDDDDDLLLLLLLLUUDDLLUUUULLDDLLRRUUUULLRRUULLRRUULLRRDDDDRRRRDDRRUURRUUDDDDRRLLDDRRLLUUUULLDDLLUULLLLDDRRDDDDRRRRDDDDDDDDDDDDDDLLDDLLDDDDDDLLUULLDDLLDDDDUURRDDUURRDDDDLLRRUUUURRRRRRUURRDDUULLDDLLLLDDRRDDDDUULLDDLLRRUURRRRUUDDRRDDRRDDRRDDLLLLRRRRUULLUULLDDLLUUDDLLDDRRLLLLRRUULLLLDDLLUULLDDUUUUUUDDRRLLDDRRDDRRUURRRRRRRRUUUURRRRLLUULLRRUURRLLDDRRRRDDDDLLRRDDDDRRUUDDLLUUUURRRRRRDDDDLLUUDDRRRRRRUULLRRRRDDRRUUDDRRLLLLUUUURRUUUURRLLDDRRDDDDUUUULLLLUUDDLLUULLDDLLRRDDRRLLUUUURRDDRRRRDDLLDDLLDDLLLLUUUULLLLLLUUUULLLLDDLLLLLLUULLUULLLLLLUURRUULLLLUULLUURRLLUULLDDLLRRUULLLLDDUURRRRUURRRRDDRRRRLLUUUUDDDDLLUUUULLLLLLDDLLRRUULLLLRRRRRRRRUURRUULLLLDDLLRRUULLLLUURRLLUUUUUULLUUUUUURRRRDDUULLDDDDRRRRUUUUDDDDLLLLUUUUUURRLLLLUURRRRLLLLUURRRRLLLLDDDDRRDDLLDDDDDDRRDDRRDDUUUURRDDUURRUURRRRUUDDRRLLLLLLUUUUUULLRRDDDDRRUURRUUDDLLUUUULLUURRUUDDLLDDRRDDDDDDLLDDDDLLLLDDLLDDDDDDDDLLLLDDLLUUDDDDRRLLLLUUDDDDRRDDRRUUDDLLUULLUURRUURRUUUURRUULLUURRLLUURRLLLLDDDDLLDDDDUURRLLLLRRUUUULLUUDDLLDDDDUURRLLUURRRRDDRRUUUULLUURRRRUUDDLLLLUULLRRUULLUULLLLUURRLLDDRRRRRRRRDDDDUURRLLUURRUULLUUDDRRDDLLLLUULLRRUUUURRRRDDUULLLLDDDDDDLLDDLLDDLLUULLLLLLRRUURRLLDDRRRRDDDDLLRRRRDDUURRLLLLDDLLLLUUDDLLUUUURRRRLLLLDDDDRRDDDDRRRRLLDDRRLLUUUURRLLDDLLLLLLLLUURRRRLLUUUUDDDDLLDDRRRRRRUUUURRRRUUUURRUURRRRDDDDDDRRRRDDDDRRDDLLDDRRRRUURRRRRRRRDDLLDDRRDDLLLLDDRRDDDDDDLLDDDDLLLLUUUULLLLUULLLLDDDDLLLLDDRRDDDDRRDDRRRRDDLLLLLLLLUULLUULLLLLLUULLLLDDLLLLDDLLLLLLLLDDLLUULLUUUUUUUURRUUUUUUUURRRRUUUURRRRUUUUUUUUUURRUUUUUUUULLUUUURRRRLLLLUUUUUUDDDDLLUUDDRRRRRRUUDDLLUUUUUUDDRRUUUULLLLDDUURRRRRRRRLLDDRRDDLLRRUURRDDUURRRRLLDDRRLLUULLUURRRRLLUULLLLLLLLRRUULLRRUUUULLRRDDRRRRRRDDRRLLLLLLRRRRUULLLLUUUURRLLLLUURRLLUUUUDDRRRRDDUURRLLLLUUUURRDDUURRRRLLDDRRRRDDUURRDDRRRRLLLLUUUULLUULLUUDDLLLLRRRRRRRRUULLRRUUUUDDLLRRDDRRDDDDUUUUUUUUUUDDRRUUDDLLDDRRDDUURRRRLLUUUUUULLRRDDRRDDUUUUUURRLLLLLLLLRRRRRRUUUUUULLUUDDLLRRDDDDUUUURRRRRRRRDDUULLLLUULLUURRLLLLLLRRRRDDRRRRUUDDRRUURRRRRRLLDDLLRRUULLLLDDLLLLDDLLDDDDDDDDDDLLDDDDLLLLDDLLDDLLDDRRDDLLLLLLUULLLLUUUURRUUUURRDDDDUUUULLLLUULLUUDDRRDDLLDDDDUURRLLUURRRRUUUULLUULLRRDDRRDDRRRRRRDDLLDDUURRUURRUURRLLDDLLLLUURRLLLLUULLUUDDRRRRRRRRUUDDLLLLUUUUUURRDDDDUURRLLUULLUURRRRDDUUUURRLLDDRRRRLLDDDDRRLLDDRRLLUUUUUULLLLLLDDDDDDDDLLUUUULLRRUUUULLDDUUUURRRRRRLLLLLLDDLLUULLDDLLDDUURRUURRDDDDLLDDRRLLLLDDRRRRLLLLDDDDDDLLLLRRUULLUUDDLLDDUURRRRDDRRUUUUUULLDDUUUULLDDUULLUURRUURRDDUUUURRLLDDLLUULLLLLLRRDDRRLLLLRRUURRRRDDDDLLDDLLUUDDDDRRLLUULLUUDDDDDDRRDDUURRLLLLLLLLRRRRDDLLLLRRDDRRRRLLLLLLDDRRLLUULLDDUUUULLRRUUUUUURRRRLLDDRRLLUULLDDDDLLLLUUUUDDRRLLDDDDDDLLDDUURRRRDDDDUULLDDUURRUULLUUUULLDDUULLDDLLUULLRRUULLRRDDDDRRDDLLDDUULLUUDDDDDDDDUUUUUURRRRUUUURRUUUULLDDUULLUUDDLLUUUUUUDDRRLLDDDDRRRRRRUULLUUUURRLLLLRRDDDDRRRRUURRLLLLRRUURRRRRRDDDDRRLLUURRUUDDLLLLDDLLDDUURRUURRUULLLLLLDDDDLLDDDDDDRRRRRRDDDDRRRRUURRUUUUUURRRRRRRRDDRRUURRUURRUURRRRDDDDDDDDDDRRDDLLLLDDDDDDLLDDDDDDDDLLDDDDRRDDDDLLDDDDRRRRRRRRRRDDRRDDRRUUDDLLLLDDUURRUULLUURRRRUURRLLUURRUULLRRDDRRRRLLUUUUUUDDLLLLLLUURRRRLLLLLLDDDDLLDDRRDDUURRDDUUUUDDLLLLUULLLLRRUUUURRDDUUUUDDLLDDDDRRRRUUUURRDDRRRRRRRRUUUULLRRDDDDRRUURRRRUUDDRRRRUUUURRRRLLLLDDDDRRDDDDUULLLLRRRRUULLLLLLLLLLUURRUURRRRDDUUUURRLLDDLLLLLLLLLLLLLLRRUURRLLUURRLLDDDDRRRRRRUULLRRUULLUULLRRDDRRDDRRUUUULLUUDDRRRRUURRLLLLRRDDDDDDUURRUURRUUDDLLDDRRRRDDRRLLUURRRRDDDDRRLLUUUURRDDUUUULLLLUURRRRLLUULLRRUULLRRDDRRUUDDLLDDLLDDRRRRDDLLLLLLUUUUUULLRRUULLLLDDUULLUULLUUDDLLDDRRLLDDRRRRLLLLUUUURRRRRRRRUULLUULLDDUULLLLUURRLLDDRRRRRRDDRRDDRRRRUULLRRUULLLLUULLRRDDRRUUUULLLLRRRRDDDDRRRRDDRRDDLLRRUUUURRDDRRDDLLDDUURRUULLUURRUUUUDDRRUUDDRRDDLLRRDDLLDDDDLLRRUUUURRUUUULLLLDDLLLLDDLLUUUULLUURRRRDDUURRDDUUUULLLLLLLLRRUURRLLDDRRRRRRUULLRRRRDDRRRRUURRLLLLRRDDLLLLUULLDDDDLLLLLLDDRRDDLLDDDDLLLLLLLLDDRRRRRRDDDDDDDDLLLLLLUULLDDDDLLDDRRDDLLDDDDRRDDDDUULLLLRRDDDDLLLLRRRRUUUURRRRDDUUUUDDRRRRLLDDRRDDRRUURRDDUURRRRLLDDRRRRDDRRDDUUUUDDRRLLLLLLLLRRRRUULLLLUUUUUUDDLLRRRRUUUULLUUDDLLDDUUUULLRRDDRRRRUURRUURRDDRRLLUURRUULLRRDDLLLLDDLLDDDDRRUUDDRRDDRRLLLLRRDDLLRRRRDDUULLUUUUUURRDDUURRUUDDRRLLDDDDDDUUUUUULLLLDDLLLLDDLLDDLLLLDDLLDDRRRRLLDDLLRRUULLLLDDUUUULLRRDDLLDDDDLLUULLRRUUUUDDLLLLRRRRDDDDDDLLUULLUULLDDUUUULLDDDDUUUURRDDRRDDRRDDDDLLUULLLLDDRRLLUULLDDUULLDDDDRRLLDDRRLLUULLDDUUUUDDLLUUDDRRRRUUUURRRRRRRRDDRRRRRRRRRRLLDDDDUUUULLUURRRRUULLRRDDRRUUDDRRRRDDLLDDRRDDLLRRUURRUUDDDDRRUUDDDDDDRRLLUURRRRDDUURRLLLLLLUULLUULLLLUURRUULLUUUURRDDRRUURRDDUULLDDDDRRRRUURRUUDDRRUUUURRUULLRRDDLLDDDDRRUUDDDDLLDDDDUURRDDUURRLLLLLLUUDDLLLLRRRRDDLLDDUURRDDRRRRRRDDLLDDDDUUUURRDDRRUURRDDRRLLUULLDDLLUUUUUURRRRUULLRRDDRRDDDDUULLLLRRRRUURRDDUURRDDRRLLUULLLLUURRLLUURRLLLLLLUUDDLLUUUUDDDDRRRRUUUUDDRRRRRRDDRRLLDDRRLLUUUULLLLUUUURRRRDDLLRRUURRUUDDRRUURRDDRRUUUULLLLUUUUUUDDLLLLRRDDDDUULLRRUUUUUURRLLLLRRDDLLLLRRRRDDRRDDRRRRLLUURRLLUUUUDDRRUUUUUULLDDUUUUDDLLDDUUUULLLLRRDDDDUUUURRDDRRRRDDDDDDLLDDDDLLDDRRRRDDDDLLUULLDDLLDDDDUURRDDDDRRUUUURRLLDDRRDDUULLDDDDRRLLLLDDLLRRUURRDDDDLLRRRRUUDDDDLLDDLLRRUURRDDDDLLDDUULLDDLLLLRRUULLUUDDLLRRRRUUUURRLLLLLLDDUURRRRDDDDDDRRDDDDRRLLUURRRRDDUUUUDDLLLLLLDDLLRRDDDDRRLLUULLDDLLDDLLUUDDRRUUUULLLLLLRRDDDDUULLLLRRRRUURRRRUUUURRLLLLDDUURRUULLUUDDLLLLRRRRRRDDDDDDDDRRUURRRRRRDDRRUUDDDDDDUUUULLDDDDLLUUDDLLUUDDLLUUDDDDLLUUDDRRUURRRRRRDDLLDDDDDDUURRLLLLUUUUDDLLRRDDLLDDRRLLUURRRRUURRRRUUDDDDDDLLDDUURRUUUULLLLUURRUUUUUUUULLLLUUUURRUUUURRRRUUUUUULLUUUUUULLUUUULLUULLLLLLUUUURRDDRRUUDDLLUULLUURRUUDDLLLLUURRLLLLLLLLDDUURRRRDDDDDDLLDDUUUUUUDDLLRRDDRRUURRDDDDLLDDUURRUUUULLUUUUUURRUURRDDUURRLLUUUURRRRLLDDRRLLUULLDDDDLLUULLDDLLDDUULLRRRRUULLLLUUDDLLUUDDRRRRRRRRUULLLLRRUULLLLLLRRUULLLLDDUURRRRRRUURRRRRRLLDDLLRRRRDDRRLLLLRRUURRRRLLUURRUUDDLLDDLLLLUULLLLDDLLUUUULLUURRLLDDLLLLLLDDUURRRRDDRRLLLLDDLLRRDDLLDDUURRUUUURRUURRRRRRUUUULLLLRRUUUUDDDDRRDDRRRRUURRLLUURRLLDDDDLLUUUULLUUUUUUUULLDDDDUULLRRUURRDDDDRRDDUURRDDUULLUUUUDDRRRRUUUURRDDUURRRRLLLLLLDDLLUULLLLRRRRDDRRDDRRRRUURRRRRRDDRRLLUURRUULLLLRRRRDDLLLLLLDDRRDDRRRRDDUULLLLDDDDRRUUDDRRDDUULLLLUUUUUULLUULLDDLLDDLLDDUURRRRDDLLRRRRUUDDDDLLLLDDDDDDUURRLLLLDDLLLLRRRRUURRUURRRRRRRRLLDDRRDDUURRLLLLLLDDDDDDUUUURRDDDDRRUUDDRRDDUUUUUU
+Correct, you solved lambdaman11 with a score of 9641!
+
+#+end_src
+
+**** DONE lambdaman12
+CLOSED: [2024-06-29 Sat 14:54]
+#+begin_src shell :results org
+s="get lambdaman12"
+echo $s
+my-make -f ~/src/icfp2024/Make.zsh encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get lambdaman12
+#####################################################################################################
+#.....#...#.....#.........#.......#...#.#.#.#.....#.#.#.#...#...........#...#...#...#.......#.#...#.#
+###.#####.#.#.#######.###.#.#.#.#.#.###.#.#.#####.#.#.#.###.###.#########.###.###.#########.#.###.#.#
+#...........#.....#...#.....#.#.#...#...#.#.#.#.#...........#.......#.#...#.#.....#.....#...#.#...#.#
+###.#######.#.###.#.#####.#########.#.###.#.#.#.#.#.#.#.#######.#####.###.#.#.#.#.#.#######.#.###.#.#
+#.#.....#...#.#.#.#...#.#.#.....#.#.#...#.........#.#.#...#.....#.....#.....#.#.#.#.........#.....#.#
+#.#####.#.###.#.#.#.###.#.#.###.#.#####.###.###.#####.###.#####.#.#.#####.#####.###.###########.###.#
+#...#...#.#.#...#.#...#.....#.#...#.#.......#.......#.#...#.....#.#.#...#...#.#.......#.#...#.#.#...#
+#.#.#####.#.#########.#######.#####.#####.#.#.###.#######.#.#####.###.###.###.#.#######.#.###.#.#.###
+#.#.....#.#.........#.#...#.#.....#.#.#...#.#.#.#.#.......#.#.....#.......#.........#.....#.......#.#
+###.###.#.#.#.###.###.###.#.#.#####.#.#########.#.###.#####.#.#.#########.#.###.#.#.#.###.#.#######.#
+#...#.#...#.#.#...#.....#...#.....#.#.....#.#...#.#...........#.#.#...#...#...#.#.#...#.........#...#
+#.#.#.#####.#####.#.#######.#.###.#.#####.#.#.###.#####.#.#.#####.#.###.#.#.#####.#######.#.#####.###
+#.#.....#.#.#...#...............#.....#.......#.....#...#.#.....#.......#.....#...#...#...#.#.......#
+#####.###.#####.#####.#########.#############.#.###.#######.###.#.#.###.#####.#.###.###.###.#####.#.#
+#.....#.#.......#.#.#...#.#...#.....#.............#.......#.#.....#.#.#...#...#.#.#...#.#.#.#...#.#.#
+#####.#.#.#.#####.#.#.#.#.###.#.#.#####.###.#####.###########.#######.###.#.#####.#.###.#.#.#.###.#.#
+#...#.....#...#...#.#.#.#.......#.#...#...#.#.#.#...#...#.....#.#...#.....#...#.......#.#.......#.#.#
+#.#.#.#######.#.#.#.#.#####.###.###.#.#####.#.#.###.###.#######.###.#####.#########.#####.#.#####.#.#
+#.#.#.....#...#.#...#...#...#...#...#.#.#.........#.#...#.............#.#.....#.#.#.......#...#...#.#
+#.#.###.#.#.#.#####.#.###.#.#####.###.#.###.###.#######.#.###.#######.#.#####.#.#.#.#######.#.#.#.###
+#.#.#...#.#.#...#.#.....#.#.#...#...#.#...#...#.......#...#...#.#.........#.#.#...........#.#...#.#.#
+###.#.#.#########.#.#####.###.#.#####.#.#########.#.#.#####.###.#.###.#####.###.#####.#####.###.###.#
+#...#.#.#...........#...#.#.#.#.#...#...#.....#.#.#.#...#...#.#...#.#...#.#.....#.#.#...#.....#.#...#
+#.###.###.###.#.#.#.#.#.###.#.#.###.###.#.###.#.#.#####.#.###.#.###.#####.#.#.#.#.#.#.#.###.#.#####.#
+#...#.#.#.#.#.#.#.#...#.#...#.#.......#.#.#...#.....#.#.....#...#.....#.....#.#.#.....#...#.#...#.#.#
+#.#.#.#.#.#.###.#########.#######.#.###.###.#####.#.#.###########.###.#.#.#########.###########.#.#.#
+#.#...........#.......#.........#.#.#...#.#.#...#.#...#.....#...#.#.....#...#.#.#.......#...#.#.....#
+#.###.#.#.#.###.###.#######.#######.###.#.#.###.#.#.#.###.#####.#.###.#######.#.#.#####.#.###.#####.#
+#...#.#.#.#.#.#...#.#...#.#.....#.......#.....#...#.#.....#.#...#.#...#.....#.#.#.....#...#.....#.#.#
+#.#######.###.#####.#.###.#.#.#.###.#.###.#####.#####.###.#.#.#.#.#.#####.###.#.#.#######.#.#####.#.#
+#.#.....#...#...#.#.#.#.....#.#.#.#.#.........#...#.#...#.#.#.#...#.#...#...........#.........#.....#
+#.#####.#####.#.#.#.#.#.#####.###.#####.###.###.###.###.###.#.#.#####.#.#.#.###.#######.#.#.#####.###
+#.....#...#...#.......#...#.#.....#.#...#.#.........#.....#...#...#...#.#.#.#.#.#.#.....#.#...#.....#
+#.#######.#######.#####.#.#.#.###.#.###.#.#####.#######.###########.#.###.#.#.###.#.#######.#########
+#...#...#.#...#.........#...#.#.#...........#.......#.....#...#.#...#...#.#.#...#...#.#...........#.#
+#.###.#.#.#.#.###.#######.###.#.#.###.#.#.#######.###.#####.###.#####.###.#.###.#.#.#.#.###.###.#.#.#
+#...#.#.....#.#.#.#.....#.#.....#.#...#.#.....#...#...#.#.#.#.#...#.#.....#...#...#...#.#.#...#.#.#.#
+#.#.###.#####.#.#.#####.###.###.###.###.#.#####.#.#.#.#.#.#.#.#.###.#.#.#.#############.#.#.#####.#.#
+#.#.#...#...#.#.........#...#.....#.#...#.....#.#.#.#.#...........#...#.#.#.....#.#.#.#.#.....#...#.#
+#.#.#.#.#.#.#.#####.#.#####.###.#####.#.#############.#.#####.#.#########.#.#.#.#.#.#.#.#####.###.#.#
+#.#...#...#.#.#...#.#.....#...#.#.....#.............#...#...#.#.....#.......#.#.#.#.#...#.#...#.....#
+#####.###.#.###.#####.#############.###.###.#############.#.#######.###.#.#######.#.#.###.#####.#.###
+#.#...#...#.#.#...#...............#...#.#...#.....#...#...#...#...#.#...#.#...#.#.....#...#.#...#...#
+#.#####.#####.###.###########.###################.###.#.#.#######.###.#######.#.###.###.###.#.#.###.#
+#.........#.#.#...#.#.#.....#.............#.....#...#...#.#.#.....#.#.#...#.......#.#...#.....#.#.#.#
+###.#.###.#.#.#.###.#.#.###.#.#.#####.#####.#.#.###.#.###.#.#####.#.#.#.###.###.###.###.###.#####.#.#
+#...#.#.....#...#...#.....#...#.#...#...#.#.#.#.........#.#...#.#...#.....#.#.#.#.#.......#.#...#...#
+#########.#.#.#.###.###.#.#####.#.#######.#####.###.#.#.#####.#.#.#########.#.###.#########.###.#####
+#.....#...#.#.#.#.......#.#.#.....#.......#.#.....#.#.#...#...#...#...........#.........#...#.#.#.#.#
+#.#####.###.#.#####.###.###.###########.###.#####.#########.###.#####.#################.#####.#.#.#.#
+#.....#.#.#...#...#...#.#.....#.....#.#.....#.......#...........#...#.#.#.....#...............#.#.#.#
+#.###.#.#.#.#.#.###.#.#####.#######.#.#####.#.#########.#####.###.#.#.#.#.#######.#####.#.###.#.#.#.#
+#...#.#.#.#.#.....#.#.#...#.#.....#...#...........#.#.#.#.......#.#...#...#.#.#.....#...#...#.....#.#
+#.#.#.###.#.#######.###.###.#.###.#.#######.###.###.#.#.###.###.#.#.###.###.#.###.#.#.#######.#####.#
+#.#.#...........#.........#.#...#.....#.#...#.#.#.........#.#.#.#.#.......#.......#.#...#.#...#.....#
+#.#######.#######.#.###.#.#.#######.###.###.#.#.###.#########.###########.#.#.###########.###.###.###
+#...#.#.......#...#.#.#.#.#...............#.#...#.#.........#...#.......#...#.....#.......#.........#
+#.###.#.###.#########.#.###.###.#.#.###.#.#.#####.#.#.###.#.###.#####.###.###.###########.#####.#.###
+#.#...#.#.#.....#.#.#.#.......#.#.#...#.#...#.....#.#.#...#.....#.#.........#.#.#.#.........#...#...#
+#.#.#####.###.###.#.#.#.#######.###.###.#.#.#####.#.#############.#.###.#.#####.#.#######.#########.#
+#...#.#...#.#...#.........#...#...#.#...#.#.#.#.....#.......#.#.#.#.#...#...#.....#...#...#.#.#.#...#
+#.###.#.###.###########.#.#.#####.#.#######.#.#.#.#.#.#######.#.#.#######.#####.###.#.#.###.#.#.#.#.#
+#.........#...#.......#.#...#.....#.#.#...#...#.#.#.....#.....#.......#.....#...#.#.#.#.#.....#...#.#
+#.#.#########.#####.#.###.#####.#.#.#.###.#.#.#####.#####.#####.#########.###.###.###.#.###.###.#####
+#.#...#.........#...#.....#.#...#.#.#.......#...........#.#.#.#.........#.#.#...#.......#...#.#.....#
+#.#.#########.###.#.#######.###.#.#.#.#####.#.#.#.#######.#.#.#.#######.#.#.#.###.#.#.#.#.###.#.###.#
+#.#.#...#.......#.#.......#.#.#.#.#.#...#...#.#.#...#...#.......#.#...........#...#.#.#...#.......#.#
+###.#.#######.#####.#.#.###.#.#.#############.#####.###.#.#####.#.#####.#.###.#.###.#.#.#############
+#...#.#...#...#.....#.#.#...#...#.#.........#.#...#.....#...#.#.#.#.....#...#...#...#.#.....#...#...#
+#####.#.#####.#######.#.###.#.#.#.#.#.###.#.#.###.#.###.#.###.###.#.#.#######.#.#####.###.###.#.#.###
+#.#.#.#.......#.....#.#.....#.#.#.#.#...#.#.....#.#...#.#.#.......#.#.#.....#.#.....#.#.....#.#...#.#
+#.#.#.#.#.#.#.#.###.#.#.###.#####.#########.#####.###.###.###.#.###.#.#.###########.#####.#.#.###.#.#
+#...#.#.#.#.#.#...#.#.#.#.#.#...#.#.......#.#...............#.#...#.#.....#.......#...#...#.#...#.#.#
+###.#.#.#####.#.###.#.###.#.###.#.###.#######.#######.###########.#.#####.#######.#.###.#########.#.#
+#...#.......#...#.....#.#.....#.....#.#.#.#.#...#.#.......#.#.....#.#...#.#...#.#.....#.............#
+###.###.#####.###.#.#.#.#.###.#.#.###.#.#.#.#####.###.###.#.#.#.#####.#######.#.#.#.###.#.#.#########
+#.......#.......#.#.#.#.#...#.#.#...#...#.#.......#.#.#.......#.......#.#.....#...#...#.#.#...#.....#
+#########.#############.###.#.#.#.#.#.###.#####.#.#.#######.###.#######.###.#.###########.#####.#.###
+#.......#...#...#.#.........#.#.#.#.......#.....#.......#.....#...#...#.#...#...#.......#.#...#.#...#
+#####.###.#.###.#.#######.###.###.#.#############.#########.###.#.#.###.#######.#######.###.#.#.###.#
+#.....#...#.#.#.#.#.#.......#...#.#.......#.......#.....#...#...#.........#.......#.........#.#.#...#
+#####.#.#####.#.#.#.###.#####.###.#.#######.###.#####.###.#######.###.#####.#####.#.#####.#####.#.###
+#.#.......#.............#.#.#.#.#.#...#.....#...#.......#.#...#.#...#.#...#.#.#.....#.#.....#...#.#.#
+#.#.#.###############.###.#.#.#.#.#######.#.###.###.###.###.#.#.#.###.###.###.#.###.#.#.#####.#.###.#
+#...#..L....#.#.....#.#.....#...........#.#.#.#...#...#.#...#.#.....#.......#...#.....#.#.....#.#.#.#
+#.###########.###.#####.#####.#######.###.###.###.###.#####.###########.#######.#.#####.#####.###.#.#
+#.#...#.....#.....#.#.......#.......#.......#.#.#.......#.#...#.....#.......#...#.....#...#.......#.#
+###.#.###.#####.###.#.###.#####.###.#####.###.#.###.###.#.#.#.#.###.#.#####.#####.#####.###.#####.#.#
+#.#.#.#.#.#.......#.....#.......#.....#...#...#.....#.......#.....#.#.#...#.#...#...#...#.#.#...#...#
+#.#.###.#.#####.#.###.#############.#####.#.###.#######.###.#.#.#########.#.#.#.#.###.#.#.#.#.#######
+#.......#...#.#.#...........#.#...#...#.#.#...#.....#...#...#.#...#...#.......#.....#.#.#.....#.#...#
+#.#.#######.#.#########.#####.#.#.#####.#.###.#####.#.###.###.#######.#########.#.###.#######.#.#.###
+#.#.......#.#...#.......#.#...#.#.#...........#.#...#.#.....#.#...#...........#.#...#.#.......#.....#
+###.###.###.#.###.#####.#.###.#.###.###.###.###.#.#.#.#######.###.###.###.###.#####.#########.###.###
+#.....#.....#.#.#.....#.#...#.#...#.#...#...#.....#.#.....#.....#...#...#.#.#.#.#.#.....#.....#.....#
+#.#.#.#.###.#.#.###.###.###.#.###.###.#####.#.#####.#.#.#####.#####.#######.#.#.#.###.#####.###.#.#.#
+#.#.#.#...#.....#.....#.........#.#.#...#.#.#...#.#.#.#...#.#.#.........#...........#.......#...#.#.#
+#########.#.###.###.###.#######.#.#.#.###.#.#.###.###.###.#.###.###.###.#.#.#######.#.#.###.#.###.###
+#.........#...#.......#.......#.....#.....#.#.....#.....#.#.....#...#.....#.....#.....#...#...#.....#
+#####################################################################################################
+
+#+end_src
+
+
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 12
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman12 RRRRLLLLLLUUUULLLLRRRRUURRLLLLLLRRRRDDDDLLDDLLDDUUUUDDRRUURRRRRRLLUURRUURRDDUULLUURRRRRRLLUUUUUUUULLRRUURRLLLLLLRRRRUURRLLUULLUUDDRRDDLLLLLLRRRRRRDDDDDDLLDDUULLDDUULLUURRLLDDDDDDRRRRLLLLLLUUUUUUUURRLLDDDDDDDDRRDDLLLLLLRRUULLRRUUUUDDLLUUDDRRDDDDRRRRUUUUUURRRRRRDDDDRRUURRLLUURRRRDDDDDDUULLDDUURRRRDDUUUUUUUUUURRRRLLDDDDDDUURRRRUULLRRUUUUDDDDDDDDDDLLUUDDDDRRDDLLLLUUUUDDDDLLLLRRRRRRDDRRLLLLLLRRDDLLDDUULLUUDDLLUUUUDDDDLLLLUUDDLLRRRRUUUULLRRDDDDRRRRRRRRUURRUURRUULLUURRRRDDDDDDRRLLDDDDRRUUDDRRUUUUUUUUUURRLLUUUUUUDDDDDDLLDDDDUUUUUULLRRDDRRDDRRDDDDDDRRLLUURRRRRRLLLLLLUURRRRRRUUUUDDDDLLLLUURRUUDDLLUUUULLRRRRRRLLLLDDDDDDLLUULLDDDDDDDDRRRRRRLLDDRRRRRRLLDDLLRRDDDDRRDDLLRRDDDDUUUUUURRUULLUURRUUUUDDDDLLDDRRDDLLLLLLUUDDLLLLDDUURRRRDDLLDDRRLLDDRRRRUUDDLLLLUUUURRUURRUUUUUUUUUULLRRRRDDUUUURRRRRRUURRUUDDRRRRLLLLLLUUUUDDLLDDLLLLRRRRUULLLLUUDDRRRRRRDDDDLLDDLLRRDDRRDDRRRRUULLUULLRRRRUURRLLLLRRDDRRDDUULLLLDDRRDDRRDDLLRRDDLLDDDDDDDDRRLLLLRRUUUURRRRLLDDRRDDUULLUULLUUUURRUURRUUDDRRDDLLDDRRLLLLRRUURRUUUUUULLRRUURRDDUULLDDDDRRDDDDDDDDDDUURRLLLLRRUUUUUURRRRLLDDRRLLUUUURRRRDDUULLLLDDLLUULLDDLLLLUULLLLDDLLLLUUDDDDRRRRDDDDDDUUUULLDDLLUUDDLLDDRRLLDDRRRRUUDDLLLLUUUURRRRUURRUULLLLUURRRRUULLUULLUUUULLLLDDLLDDDDLLLLUULLLLLLLLDDRRRRRRDDRRLLLLRRDDRRLLUUUULLLLDDLLLLLLUURRLLLLUURRUUDDRRUUDDLLLLDDLLDDRRLLLLUUDDRRDDLLLLUULLDDUULLLLRRRRUULLUUDDRRRRUURRLLLLRRDDLLDDRRDDRRRRRRRRRRLLLLDDDDDDDDRRRRRRLLLLLLUURRRRUULLUUDDRRDDRRUUUUUUDDLLRRDDDDRRDDRRRRUUDDLLUUUULLUUUURRDDUULLDDDDRRDDDDLLUULLLLLLLLUUUULLLLLLDDRRRRLLDDRRLLLLRRDDRRLLLLLLUUUUDDLLUUUUUUDDRRLLDDDDLLDDRRLLUUUUUUUULLUUUURRLLLLRRDDDDRRDDDDLLLLDDRRDDLLLLLLLLRRRRRRRRUULLUUUURRLLLLLLDDDDUURRDDUULLLLDDUURRUUUULLDDUUUUDDRRRRRRUUDDLLLLUUUURRDDUULLDDDDDDRRRRDDRRRRDDRRRRDDRRRRUUUULLUURRRRRRUULLUUUURRRRDDRRRRRRUULLUUUUUUUUUUUULLUUUULLLLUUUULLLLDDLLLLRRRRUUUULLDDUURRUULLLLRRRRRRDDRRRRUURRUURRLLDDLLUULLDDUULLUUUUDDDDLLUUDDLLUUDDRRRRRRUURRRRRRLLUUUUUUUUUUDDRRLLLLRRDDDDDDRRRRDDDDRRDDDDDDUUUULLLLRRDDLLRRDDDDDDUULLDDUUUUDDRRUUUUUURRUULLUUUURRDDUURRDDRRLLDDDDDDDDUUUUUUUUUUUURRLLUURRUUDDLLUULLLLRRRRDDDDLLUULLLLDDRRLLUURRRRDDRRDDRRRRUUDDDDDDLLRRUUUURRDDDDUURRUUUULLRRUULLLLRRRRUUUUDDLLLLUURRUUDDLLLLLLRRRRDDRRRRDDRRRRRRLLDDDDLLUUDDRRUUUULLUURRRRRRLLUULLLLRRUUUULLDDUULLDDUURRRRDDRRRRDDUUUULLUULLLLRRRRDDRRDDRRDDUURRDDRRLLUULLUUUULLRRDDRRUURRDDDDUUUUUURRDDRRLLUULLDDLLDDLLDDLLLLLLDDRRDDLLLLDDLLDDDDDDDDDDDDDDLLRRUULLUULLRRDDLLLLUUDDDDRRLLUURRRRRRUURRUUDDDDDDDDDDRRLLLLDDUUUULLDDUULLLLDDRRLLUULLDDUURRRRRRRRDDRRUUUUUURRDDUURRRRRRRRLLLLUURRRRLLUURRRRRRLLLLLLDDLLUULLDDUULLDDUURRUUUUDDLLLLRRRRDDRRUUUURRDDUURRRRDDLLRRUURRDDRRRRUULLUUDDRRDDLLLLUULLLLLLLLUUUUDDLLRRRRUUDDRRRRLLUUUULLRRRRRRUURRUULLUUDDRRDDLLDDRRDDRRDDUULLLLDDUULLRRRRUURRUUUUDDRRUURRUUDDLLUUUULLRRDDLLLLRRRRDDDDLLDDLLLLLLLLDDDDLLLLDDDDDDDDDDLLDDRRDDRRRRDDUUUULLRRDDLLLLDDRRDDLLLLUUUULLRRDDDDLLLLDDRRLLUURRRRRRRRRRRRRRLLUUUURRLLUUUUUURRRRUUDDLLLLDDDDRRUUDDRRUUDDRRDDUUUUUUUUDDRRUUUUDDDDRRRRLLLLLLDDRRRRRRRRDDLLLLRRRRDDLLLLDDDDDDUUUUUURRDDDDRRRRDDUULLUURRRRLLLLDDLLUUUURRUURRDDRRLLUURRUUDDRRUURRLLUURRUUUUDDLLRRRRUUDDLLDDLLDDDDDDDDUURRDDRRRRDDRRLLDDRRLLDDRRLLUULLDDLLUUDDRRUUUULLLLLLRRRRRRDDRRUUUULLLLUUUURRUUUUDDRRDDDDLLRRUUUURRDDDDDDUUUUUUUUUULLDDUURRDDDDRRUUUURRUURRLLLLLLLLRRRRRRUUUUDDLLLLLLRRRRRRDDDDLLDDDDDDRRUURRUUUUDDLLRRRRUUDDLLDDLLDDLLDDRRRRLLDDLLRRRRDDUULLDDLLDDDDUURRDDDDUUUURRDDRRLLUURRRRRRRRUUUUDDDDLLUUUUUURRLLDDLLUULLDDDDRRLLUUUURRDDRRDDDDLLLLLLLLLLUURRUUUULLUUUULLLLLLDDLLDDLLUULLLLUUUURRLLLLRRUURRLLUURRLLLLDDLLRRUULLLLDDUURRUURRLLLLLLRRRRDDRRRRUUUULLUUUUDDRRUURRRRLLLLDDLLDDLLLLUUUULLDDDDUUUURRDDRRUUUULLRRRRRRRRRRUUDDLLUUUURRUULLRRDDRRDDUUUUDDRRLLLLLLDDDDLLLLLLDDDDLLDDRRRRRRDDRRUUUUDDRRUUDDDDDDUURRRRLLLLUURRRRUULLRRRRDDUULLUULLRRRRRRRRDDLLDDRRLLUURRUUUULLLLLLUUDDLLRRRRRRRRDDRRDDRRLLUURRRRUUDDDDRRRRUUUUDDDDLLUUUUUULLRRDDDDDDLLDDLLRRDDLLRRRRDDLLRRUURRRRLLUULLRRRRUUUUUUDDDDDDLLDDDDRRDDDDUULLDDLLUUDDDDDDRRLLLLUUDDLLRRRRUURRRRDDUULLLLUURRUURRUULLUULLLLUUUUUULLLLLLLLLLLLDDDDLLLLLLDDLLDDDDDDDDDDLLUULLLLLLLLDDLLLLLLDDDDDDLLLLDDDDUULLRRRRRRDDLLRRRRUUDDDDRRLLLLRRDDLLDDUURRUUUURRUURRRRUULLUULLDDUUUUDDLLRRRRRRUUUUDDDDLLDDRRDDLLDDRRRRRRUURRLLDDLLLLLLDDDDLLRRUURRDDDDRRLLDDRRLLLLUUDDRRUUUURRUURRLLDDRRRRRRLLUUUUDDDDLLDDDDRRRRRRLLUULLRRDDLLDDLLDDUURRRRRRDDDDLLLLRRUULLRRDDRRRRUURRDDDDUURRRRLLUURRLLUURRRRLLLLUURRRRUUDDLLUULLLLDDDDLLRRUULLUUDDRRUURRUULLLLLLDDUURRRRUULLUUUULLRRDDLLLLRRDDLLRRUURRDDRRDDRRDDRRUURRRRUULLLLLLRRRRRRDDRRRRUURRDDUULLDDLLDDRRLLLLDDDDRRLLDDDDUULLDDDDUUUURRUUUUUURRUULLLLLLDDDDLLDDDDDDDDRRDDRRRRLLDDDDLLLLRRUULLUUDDLLUUDDLLUUUULLLLDDUULLLLLLRRDDRRLLUUUULLRRDDRRRRRRRRDDDDLLUUDDDDRRRRLLLLUULLDDLLLLRRUULLLLDDLLRRUUUULLUULLRRDDRRDDLLLLDDLLLLUUDDRRRRUURRRRRRRRDDRRUURRRRRRRRRRDDRRUURRDDRRLLUURRRRDDRRUURRUURRRRDDUULLDDDDRRLLLLRRUUUUUURRLLUURRLLDDLLUUDDRRDDLLDDLLDDLLUUUULLRRRRUULLLLLLRRRRRRUUUURRLLDDLLLLUUDDRRUUUURRRRRRUUDDDDRRUUUUUUDDDDDDLLUULLLLUULLLLRRRRUURRDDUUUUUUUURRRRLLDDRRDDLLDDUURRUULLUULLDDDDDDLLDDDDLLDDDDRRDDDDLLDDLLLLLLUULLUULLUULLUULLDDLLUUUULLLLUULLUUUULLLLUULLUUUULLDDLLLLUULLLLUUUULLUUUULLUULLLLUULLUUUULLUULLLLLLLLLLLLLLDDLLLLUUUUUURRLLDDRRDDUULLLLLLDDUULLDDLLRRUURRUUUURRDDUULLUULLRRUUUUDDLLRRDDRRRRDDUUUURRDDUULLLLUUDDRRUURRRRDDRRUURRDDDDLLRRRRUURRLLDDLLUUUURRRRRRDDRRLLUURRRRLLLLLLLLLLLLUURRRRLLLLLLLLLLLLLLRRUURRRRLLLLUURRUULLLLRRRRDDLLLLDDUULLLLUUDDRRUUUULLRRUUUUDDLLUULLUUDDDDLLRRUURRDDRRRRRRUUUURRLLDDDDLLUUUUUURRLLLLLLDDRRLLUUUUUURRDDUUUUDDRRDDRRUURRDDUULLDDLLUUUUUUUUUUDDDDLLUUUUDDLLDDUURRDDRRDDRRRRLLUURRLLUUUURRDDUULLUURRRRRRUUUUDDLLUULLRRDDRRDDRRUUUUUUDDRRRRLLLLDDRRRRDDRRRRLLUUUUUUDDDDDDLLUULLLLDDRRDDRRDDUURRLLLLDDDDLLRRUULLUULLRRDDLLLLUUDDRRDDDDUULLDDDDUUUURRUURRRRUUUULLLLLLLLLLLLLLUULLRRUURRLLLLLLDDUULLUUDDDDDDUUUURRRRRRDDDDRRUURRRRLLUUUULLUURRLLUURRUULLLLRRRRRRRRDDLLRRDDDDLLUUDDRRRRUURRRRDDRRUUDDLLUULLLLDDLLUUUURRUURRDDUURRDDUURRDDRRDDUUUURRLLDDLLUULLLLLLDDLLUULLLLDDLLDDDDRRDDDDLLDDRRDDDDDDDDLLDDLLLLLLDDUULLLLDDDDRRDDUUUUDDRRLLLLDDDDRRLLUUUULLDDUUUUDDLLDDUUUUUUUURRDDUUUURRDDUULLLLUURRUUDDRRUUUUDDRRRRRRUULLRRDDLLLLDDRRDDDDRRLLUULLDDUURRUULLUULLDDLLLLUULLLLRRRRUUUUDDRRLLLLUULLDDUURRUUUULLDDUUUUDDRRDDRRRRDDRRUUUUUURRUUUURRRRLLDDDDDDRRUUDDLLUUUURRRRDDDDUUUULLLLUULLDDLLUULLRRDDLLLLLLLLRRUURRLLLLRRDDDDRRRRDDLLRRUULLLLUURRRRRRRRDDLLDDDDDDLLUULLLLDDDDRRDDDDDDRRDDLLDDDDDDLLUULLUURRUUUUUULLDDDDUUUURRDDDDDDLLDDDDDDRRLLDDDDRRRRLLLLDDRRLLDDDDDDUUUURRDDDDRRDDLLRRUUUURRUUUULLDDUURRDDRRUUUULLUULLLLRRRRDDRRDDDDRRUURRDDDDDDUUUUUULLDDLLLLDDDDRRUURRDDDDUUUULLDDDDLLDDLLDDUULLDDLLRRUULLUUDDRRRRRRRRDDLLRRDDLLDDDDUUUURRUURRUUDDDDDDRRDDRRRRLLUURRLLDDLLUUUUUUUUUUDDDDRRDDUUUURRUULLUURRLLDDRRDDLLDDLLDDDDLLDDDDRRRRLLLLLLUUUUDDDDDDLLDDUURRRRRRLLDDRRRRLLDDRRLLUULLUULLUULLLLUUUULLLLUURRRRLLLLDDDDRRDDUULLDDDDRRLLDDDDRRUURRUUDDLLDDLLDDDDDDUUUURRDDRRLLDDDDLLRRUUUUUURRUUDDRRRRLLUURRUUDDLLDDLLLLLLUUUUUUUUUUUURRRRDDDDRRRRRRUUUUUUUULLUULLUURRUULLUULLDDLLUUUULLUUUUUUUUUUUURRDDRRRRRRUUUURRRRRRDDDDRRRRDDDDDDLLDDRRRRRRUURRDDDDUURRUUDDLLUULLUURRUUDDRRUUUURRRRLLLLLLLLRRUURRUUDDLLDDRRDDRRRRDDUULLDDDDDDDDRRUUDDDDDDUURRLLLLRRUULLLLDDLLRRDDRRLLUUUURRUUUURRRRUUDDDDDDUURRUUDDRRDDLLDDUURRUURRRRUUDDRRLLDDRRRRLLLLDDRRRRLLLLUUUULLDDDDLLDDLLLLRRDDRRLLUURRUURRDDDDUURRRRDDLLRRUURRRRRRRRLLLLLLLLLLLLUUUUUUUULLRRUULLUULLDDUULLRRUUUURRLLUULLRRDDLLDDUULLUUUULLDDDDUUUURRDDDDRRRRDDDDRRRRUULLRRUUUUUUUUDDRRLLDDLLUUUUUULLDDLLDDRRLLUURRUURRDDDDDDRRDDDDDDLLDDRRRRUUUUDDRRRRLLUUUURRUULLLLDDUURRRRDDLLDDDDLLDDRRRRLLDDRRRRRRRRUUDDLLLLDDLLRRRRRRLLDDDDUULLDDUURRUULLUUUURRLLUUUULLRRDDRRUUUULLUUDDRRRRDDDDUURRUUDDDDRRRRDDUUUURRLLLLRRDDLLLLDDRRDDRRLLLLRRDDRRLLLLDDLLDDUURRDDDDRRUUUUDDRRUUDDRRUUUURRLLDDDDRRDDUUUUDDRRRRLLUUUUDDRRLLDDDDRRRRDDUULLLLUULLLLLLLLDDLLUUUUUURRUUUULLUUUULLUULLUUUURRDDUURRDDRRDDRRRRLLUURRUURRUULLLLDDLLUULLRRUULLRRDDDDRRUURRRRRRUUDDRRRRUULLRRDDRRDDDDRRLLUURRUUDDRRLLLLLLLLDDLLUUDDDDLLUUDDRRUURRUURRRRUULLLLLLLLDDLLDDLLDDLLUULLUULLLLLLUUUUDDRRLLLLUUDDLLLLRRDDRRLLUUUUUULLLLLLRRDDRRLLUURRRRRRUUUURRUUDDLLDDLLUUDDLLLLRRUULLLLUUDDRRRRDDRRRRDDRRRRDDRRDDUULLUULLUURRRRDDRRRRRRLLLLLLUULLUUUUUURRLLLLLLDDUURRUUUUDDLLUUDDLLUUUUDDDDLLUUUUDDDDRRDDDDUULLDDLLRRUULLLLRRUULLUURRUUDDLLDDRRDDRRRRUURRRRRRUUUULLLLRRRRDDRRDDUUUUDDRRUUDDDDDDUUUURRUUDDRRRRUULLRRDDLLLLDDRRDDLLRRDDLLLLLLRRDDLLRRRRDDLLRRUURRDDUURRRRUURRDDUURRUUUURRDDUURRUUDDLLLLDDDDLLLLDDLLUUUURRRRUULLLLRRRRUULLRRRRRRLLLLUULLRRRRRRRRRRLLLLLLLLDDDDDDLLLLDDDDDDDDUURRRRDDLLDDLLLLRRRRUURRRRUUUUDDRRDDUUUURRLLDDRRRRDDRRDDLLLLUUDDRRRRDDRRRRDDUULLLLUUUULLUUUURRUULLLLLLRRUURRLLDDRRRRUURRLLUULLRRRRUUDDLLUULLRRUURRLLDDDDDDDDDDDDRRRRDDLLDDRRLLUURRUULLUURRLLUURRUUDDRRDDUUUUUUUURRDDUUUURRLLDDLLLLDDUUUURRLLDDRRDDDDRRRRRRLLUUUURRRRLLLLDDRRRRRRRRUULLRRUULLLLLLRRRRRRDDDDLLLLLLLLDDLLLLDDRRDDDDLLDDUURRUUUURRDDRRUURRUUDDRRUURRLLDDDDLLRRDDLLDDDDUUUURRUURRRRRRLLLLUURRUUDDRRUUUULLUUUUDDDDRRRRUULLRRUULLRRDDDDLLDDDDRRUURRUUUUUUDDDDDDLLDDLLLLLLDDDDDDDDRRRRLLUURRLLDDLLDDRRDDRRDDUUUURRDDUUUUUUUULLLLRRRRUURRUUDDLLDDRRDDDDDDUUUUUULLDDDDDDLLDDLLUULLDDDDDDUULLRRRRDDRRDDRRUUDDRRUUUUUUDDLLRRDDDDDDDDLLUUDDLLRRDDRRLLLLRRUURRUUUULLLLUULLUULLUUUUUULLUUDDDDLLLLLLUURRLLLLUUDDLLRRRRUURRLLUURRLLDDDDDDDDLLUUDDLLUUDDDDDDUULLDDUULLUUDDDDLLUUDDDDRRLLUULLDDLLLLRRDDLLDDUURRUUUULLUUDDLLDDDDDDLLDDRRLLUUUUUULLRRDDLLDDDDLLUUUUDDDDRRUUUURRDDRRUUUUUURRRRDDRRUURRRRUURRRRUURRRRRRRRRRLLLLDDRRDDRRLLUULLDDLLUUDDLLUUDDRRDDLLDDRRRRLLLLDDRRLLLLDDUUUUUUDDDDLLUUUUDDDDLLDDDDDDRRLLUUUUUULLUURRLLLLRRDDDDDDDDLLDDUULLDDLLUUDDRRUUUURRLLUUUURRDDUULLDDLLDDLLRRUURRDDDDRRRRDDDDDDUURRUURRDDUURRDDUULLLLDDLLLLLLRRDDLLDDDDRRRRLLUURRLLDDLLUUUURRUURRUUUUUUUUUURRRRRRRRUUUURRRRRRDDRRUURRLLDDDDDDUULLLLRRDDLLLLDDDDRRUUDDLLUULLUUDDDDLLUULLUUDDRRDDRRUURRUURRRRUURRRRRRLLUURRUUDDRRLLLLDDDDRRLLDDDDRRLLDDLLUUDDRRRRDDLLRRUULLUUUURRRRDDUURRDDDDLLRRDDRRUUUUUUDDDDDDLLDDRRDDDDLLUUDDRRUUUULLUULLDDDDUULLDDLLUUDDLLRRDDDDLLRRUUUURRUURRUURRUUUUUULLLLLLLLLLDDDDDDLLUUDDDDLLUUUUDDDDLLUUUUDDDDRRDDDDRRRRRRLLUULLRRUURRUU
+Correct, you solved lambdaman12 with a score of 9645!
+
+#+end_src
+
+**** DONE lambdaman13
+CLOSED: [2024-06-29 Sat 14:52]
+
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 13
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman13 UULLLLLLUUDDDDDDUURRLLLLRRUURRRRRRDDRRDDRRLLLLRRDDLLRRUUUUUUUULLLLRRUURRLLLLRRDDRRDDDDRRUURRDDUUUULLRRUUUUDDRRLLLLUULLUURRLLDDLLLLRRUUUURRRRLLLLDDLLLLDDUURRRRDDRRRRDDRRDDDDRRUUDDRRDDLLRRDDLLLLRRRRDDLLRRDDRRLLLLLLUUDDRRRRUUUUUUUUUUUUUULLRRUULLLLUURRUULLLLRRUURRLLDDRRDDLLDDRRRRDDDDRRDDUUUUUUUULLRRUULLRRRRDDDDRRDDUULLDDDDRRLLUUUUUUUULLUULLUUDDRRUURRDDRRUURRLLDDLLUULLDDDDDDDDDDDDLLDDDDRRDDRRDDUUUUUUDDDDLLDDDDRRDDUURRUUUURRRRRRRRDDRRUUDDLLUULLLLUUUURRUURRUURRUUDDLLDDLLLLUUUUDDDDLLUUDDDDDDUULLDDUURRUURRRRUUUUUUUUDDLLUUDDLLDDUUUUUUDDLLDDUURRDDRRRRDDDDDDDDRRDDRRLLLLRRUURRUURRLLDDRRDDUURRDDUUUUUULLUURRLLUULLLLDDUURRRRDDDDRRDDDDRRRRUURRDDRRUUDDRRDDRRDDDDDDLLUUDDRRUUUUUURRDDDDRRUUDDLLUUUULLLLUULLLLUUUUUULLUUUUDDRRLLDDRRDDRRRRDDRRDDRRLLUURRRRDDDDUUUULLUURRLLLLRRUUUUDDRRUUUUDDDDLLDDDDLLLLUUUUUURRDDUULLLLDDUUUULLUURRLLLLUURRUUDDRRRRUURRLLUURRLLLLDDUULLLLLLRRRRRRRRDDDDDDDDRRRRLLLLUURRRRRRLLLLUURRUUDDRRUUUUUUDDLLUUUURRUUDDLLDDLLUUUUDDLLDDLLRRUURRDDRRDDRRDDDDLLLLDDLLUULLLLLLDDRRDDRRDDRRDDDDLLLLLLLLDDUUUUUUUUDDLLUUUURRLLLLDDLLRRUUUULLDDLLDDUULLRRRRUULLLLLLDDUURRRRRRUULLLLLLLLRRRRUURRUUDDRRUUDDLLLLDDRRRRDDRRUURRDDUURRDDUURRLLLLUULLRRUULLUULLUURRLLLLDDLLRRUURRUUUULLDDUURRRRRRLLUUUULLDDUULLLLRRDDLLLLRRRRUURRRRDDDDLLDDDDDDRRDDRRUURRDDUURRDDUURRDDUURRUURRUULLLLLLLLLLDDUULLRRRRDDRRRRLLLLUURRUURRLLUULLDDUULLUUDDRRRRDDDDRRRRRRRRRRDDUULLUULLLLUURRRRRRRRDDDDUULLRRUULLUURRUUUUDDLLRRDDLLLLUUDDLLUULLRRDDRRRRDDLLLLLLDDRRRRDDLLDDLLDDLLLLLLLLDDDDDDLLDDDDRRDDDDRRDDDDRRRRDDLLDDDDRRLLDDRRLLUULLDDLLLLDDDDRRUUDDLLUUUURRRRDDDDUURRDDDDLLDDUURRUUUURRRRUUUUDDRRLLDDLLDDRRDDRRRRRRUUDDLLDDRRLLDDRRRRUUUUUUDDDDDDLLDDRRLLLLDDUULLRRRRDDRRDDUULLDDLLDDRRRRDDUULLLLLLDDLLUUDDRRUURRDDDDUURRDDRRLLDDRRLLLLRRUUUULLUUUURRUUUUUULLLLUULLDDDDLLUULLUURRUUDDLLDDRRDDRRDDRRDDUULLLLLLDDRRRRLLLLUUUULLUULLUUUUDDDDRRDDLLLLLLRRDDDDUULLLLDDRRLLLLRRUULLUURRLLUURRRRRRUUUUDDLLUUDDLLUULLDDUURRDDRRRRDDLLLLLLDDLLDDDDUUUULLDDDDDDRRRRRRDDRRLLUURRRRDDUURRUUUURRDDDDRRLLUUUULLDDDDDDDDDDLLUULLLLRRDDLLLLRRRRUURRDDRRUURRDDUUUURRLLDDRRRRUUUUDDDDLLDDRRRRUURRDDUULLDDLLLLUULLLLUUUULLLLLLLLDDDDLLDDUURRUULLLLDDDDLLUULLDDLLUUDDRRUURRDDRRUUUULLLLUURRLLLLLLDDRRLLLLLLRRRRDDLLDDRRLLUULLLLRRRRRRUUUUUURRRRRRLLLLUUUUUUDDRRUURRLLDDDDRRUUDDLLUULLDDDDLLDDLLUULLUURRRRLLLLUULLUUDDLLDDRRDDLLRRUULLLLDDUUUUUUDDDDRRUURRRRDDDDRRDDLLLLDDUULLDDLLLLRRUULLUUUUDDDDRRDDRRDDDDRRRRLLLLUULLDDLLRRUULLLLDDLLLLRRRRUURRRRRRUUUURRRRRRRRRRRRDDRRRRRRRRUULLLLUUUUUURRRRDDRRRRRRUURRRRRRDDRRRRUUUUUURRDDRRUUUULLLLUULLUULLLLUUUURRUULLLLLLLLLLLLLLDDDDLLLLDDDDDDRRRRLLUURRLLUURRRRDDRRRRLLLLUULLLLDDDDDDRRLLDDRRLLUULLLLLLLLLLDDDDRRUUDDLLUUUULLDDUULLUUUUDDLLDDDDUUUULLDDUULLUUDDLLUUUURRUUDDLLDDLLLLUULLRRDDDDRRLLDDDDDDRRUUDDRRRRUULLRRUULLLLRRRRDDDDLLLLLLUUUUUUUULLDDDDDDUUUUUULLDDDDDDUUUUUULLLLDDLLUUDDLLRRRRDDLLRRRRUUDDLLDDDDDDRRUUUUDDRRRRLLLLDDRRRRRRLLLLLLLLLLUUUUDDLLUUDDRRDDDDDDRRDDUURRLLLLLLLLUURRLLDDDDLLDDDDUURRRRDDLLRRRRRRLLLLUUUURRDDUULLDDLLLLUURRUURRRRUURRRRRRRRLLDDDDDDDDUULLDDUUUUDDLLRRRRUURRRRRRLLLLDDDDUURRRRLLLLUULLUURRRRUUDDRRUUUUDDRRUUDDDDDDUUUULLDDLLLLLLUULLLLLLUULLLLLLDDDDUUUUUURRUUDDLLUULLDDDDDDLLDDRRLLUUUUUUUUDDDDDDLLUUUUUUUURRUUDDRRUUUURRRRLLLLLLLLDDUURRRRDDRRRRLLDDRRRRLLLLUULLDDLLLLDDLLDDUULLLLUUUURRLLDDRRRRUUUUDDDDLLLLDDLLDDLLDDUURRUULLUURRUUDDLLLLUURRLLDDDDDDLLDDRRLLUURRUUUURRDDRRRRRRRRRRDDDDDDLLUULLDDLLRRUURRDDDDRRDDDDUUUULLLLLLLLLLRRUULLLLRRRRUURRUURRLLDDLLDDDDRRDDDDRRUURRDDUULLDDDDRRRRRRUUDDRRUUUULLRRDDDDLLLLLLLLLLLLUULLDDLLRRUUUURRLLLLDDLLLLUUDDRRDDLLLLUULLDDUULLDDUURRRRDDRRRRUURRUUUULLDDUUUUDDLLUUDDLLDDLLLLUUDDRRUUUURRLLUULLDDUUUUDDRRDDDDDDRRUURRRRRRDDRRDDRRDDRRRRUULLUUUURRRRUURRRRRRUUUUUURRDDDDRRRRRRRRUUUUUUUUUURRRRUUUULLDDUURRUURRDDUURRLLUULLLLLLDDDDUURRLLUULLUULLLLLLLLRRRRDDLLLLRRRRUURRRRDDLLDDDDRRUUDDLLDDDDUURRRRLLLLUUUULLDDLLUUDDRRUURRUURRRRUURRUUDDRRRRRRDDUULLLLUURRUULLRRDDRRUURRDDDDRRDDUULLUUUULLUURRUUUURRLLDDRRRRDDLLRRUULLLLLLUULLLLDDRRLLDDRRLLUULLLLUULLRRDDDDDDRRUUDDLLLLUUDDRRUUUURRUUUURRUURRRRLLLLUULLDDLLUUDDDDLLRRUULLLLDDUULLRRUULLUUUUUUDDDDDDLLUUDDLLRRDDLLRRUURRRRDDRRRRRRUUUUUUDDLLUUUUUURRDDUULLUUUUDDRRRRLLUURRRRLLUURRLLUUUULLRRDDRRUUDDLLDDLLUUDDLLUUDDRRRRDDLLDDLLDDDDLLUUDDDDDDDDUULLUUDDRRUUUULLUULLLLDDLLDDDDUURRLLUUUULLLLRRRRDDLLDDDDDDUULLDDUURRUULLLLUURRLLDDDDLLUULLUURRUUUUUULLUUDDLLRRRRRRDDDDUURRLLUURRUUUUUUUUDDDDDDLLLLRRUUUUUUUUDDLLLLLLDDUULLDDUUUUDDRRRRRRRRDDDDDDRRDDLLLLDDDDDDLLUUUULLRRDDLLLLDDLLDDLLLLUUUUDDRRUURRLLUUUUDDDDDDLLLLDDLLLLRRUULLRRUULLRRDDDDRRUURRDDDDDDUURRDDDDLLLLLLLLRRDDRRLLUURRUUUUDDLLUUDDLLUUDDRRRRDDRRDDDDLLDDUULLRRRRRRUURRUUDDRRLLDDRRLLUULLDDDDLLDDLLLLDDDDLLRRUUUULLDDUUUURRLLUUUUDDDDDDRRRRRRUURRUULLUUUURRUUUULLUURRRRRRRRUUDDDDRRLLDDRRLLLLLLRRUULLRRDDDDRRDDUURRRRDDUURRUULLRRDDLLLLDDDDLLDDRRLLDDRRLLDDLLUULLUURRLLDDLLDDLLRRRRDDLLLLLLUUDDRRRRDDDDUULLLLDDDDUURRLLUULLLLDDRRLLDDRRLLUUUURRRRRRRRUURRUULLUURRRRDDRRDDLLDDDDUUUURRDDRRRRLLDDLLRRRRRRRRRRLLLLDDDDLLRRRRUURRRRLLDDDDRRUUDDRRRRLLLLLLLLLLLLLLDDRRLLUULLDDUUUURRLLDDLLLLRRDDLLRRUURRRRRRRRRRRRUUUULLDDLLUUUULLLLDDRRLLLLLLDDUULLLLRRUUUUDDDDDDLLLLDDUUUUDDLLDDUULLLLDDRRDDRRDDRRUURRDDUUUUDDLLDDLLDDRRRRLLDDRRLLUULLDDLLDDUULLRRRRDDDDUURRDDUULLUUUUUULLDDLLUUUUDDDDRRUURRUULLUULLUURRRRRRRRRRUURRRRRRUUUUUURRRRDDUULLLLUURRRRRRRRLLDDDDRRLLUUUUUULLLLUURRLLUURRRRLLUURRRRUULLRRDDDDDDLLRRDDRRLLUURRRRUULLRRUURRLLLLRRDDDDRRUUDDRRUUDDRRLLLLDDRRLLLLRRDDLLLLRRRRRRDDRRRRLLLLLLLLLLLLRRRRRRRRUULLUUUULLLLLLUUUULLLLDDLLDDDDRRRRDDLLLLLLDDDDLLUUUUUUUUUURRUUUULLLLUURRUUUULLLLUURRUUUUUUUURRLLUURRRRUUDDRRUUDDLLLLLLDDDDDDLLUUUULLLLDDUURRUURRLLLLRRUUUURRDDUULLUUUUDDLLUUDDDDDDLLDDUULLUUDDLLUUDDRRDDLLDDUURRDDDDDDLLUUDDRRRRDDUURRLLUUUUDDDDLLUUUUUUUURRRRUULLUULLLLRRUULLRRRRUUUURRLLUULLUULLRRDDLLDDRRDDLLRRUULLUURRRRDDDDRRRRRRRRDDRRDDUULLLLDDUURRUURRUUUULLDDUURRDDDDLLLLLLUURRUUUURRRRRRDDDDRRLLUUUULLLLLLDDDDLLUULLRRUUUULLRRUULLRRRRUUUULLDDLLRRUULLLLDDUULLLLDDUURRUULLRRUULLRRDDDDDDDDDDUULLDDUURRRRDDDDRRLLUUUULLUUUURRRRUULLRRRRUUUURRDDDDUUUULLDDLLUULLDDUULLUULLDDUUUUUURRDDRRLLUULLDDDDRRRRRRRRLLUUUULLRRDDRRUURRRRRRRRLLLLLLLLDDRRDDRRUUDDDDDDUURRRRLLUURRRRDDUULLLLUURRRRUUDDLLLLDDDDLLUULLUULLLLDDLLLLDDRRRRDDRRDDLLDDRRRRDDDDRRDDRRLLLLRRUUUUUUUUDDRRUUUUDDDDLLDDRRDDUURRDDUURRUULLRRUULLUUDDRRDDRRUUUUUUDDLLRRDDDDDDRRRRRRLLLLUURRUUUULLDDUUUUUUUUDDLLUUDDRRDDDDRRUUUUUUUURRRRLLLLLLLLRRRRDDDDDDDDDDDDRRRRDDUURRRRUUDDLLUUUUUUUUDDLLRRRRRRRRLLDDLLRRRRDDLLRRUULLUULLLLDDLLDDUULLDDUUUUUURRUULLRRDDLLDDDDRRRRDDDDLLLLLLLLDDLLDDRRLLLLDDDDUULLRRUURRDDDDUURRRRUUDDDDLLRRRRDDRRDDDDRRLLLLDDUULLLLUURRRRLLUULLRRDDLLDDRRDDDDLLUULLUUUUUULLRRDDDDDDLLUUDDDDLLUUUUDDDDRRUURRRRDDRRUUUURRRRUUUUUUUULLUURRLLDDRRRRRRRRDDUURRDDUULLUULLUULLDDUURRDDRRUURRUURRLLLLRRDDRRRRRRLLDDRRLLLLDDUULLRRRRUUUURRLLUURRRRLLLLDDDDLLLLLLDDDDLLLLDDDDDDRRLLUUUURRDDRRDDRRLLDDRRLLLLRRDDLLDDDDUULLUUDDDDLLDDRRDDUURRLLLLUUUUUUDDLLDDDDDDUULLDDUUUUDDRRUUUURRDDRRUURRUURRDDDDRRRRRRUUUURRUUUUDDDDLLDDRRRRDDLLRRUULLLLDDLLLLDDLLDDLLRRDDDDDDLLUUUUDDDDLLUUUULLUUDDLLDDUULLRRRRRRDDLLDDLLLLUUDDRRRRUURRDDRRRRUUUUUUUURRUULLUURRUUDDRRUUUURRLLUURRLLUUUUDDLLRRRRRRLLUUUUDDRRUURRRRDDDDDDLLRRUULLUUDDRRUUUUUULLRRRRDDDDDDUUUUUURRUUUUUUUUDDDDLLDDUULLDDUULLDDUURRUURRLLUUUUUULLRRRRRRLLDDDDUUUUUUUUDDRRUUDDLLDDLLUULLRRUULLLLLLLLLLRRDDRRDDDDDDRRRRLLLLUURRRRLLUUUUDDDDLLUULLDDDDDDUUUUUURRUULLLLDDLLUUUUDDLLDDUUUUDDLLUUDDRRRRDDRRUURRUURRRRRRRRDDDDDDDDDDDDRRRRDDDDDDDDUURRUUUUDDDDRRUUUUDDDDRRUUUUDDRRRRLLUURRUULLRRDDRRDDUULLLLDDDDRRDDDDDDLLRRDDDDLLDDUURRRRDDDDUURRUUDDLLLLDDLLLLDDDDUURRRRDDRRRRLLUURRLLDDLLUULLDDDDLLLLUULLUULLRRDDRRUUUULLLLUULLRRDDLLDDDDRRLLUUUURRRRRRUURRLLLLUULLLLUURRUUUUDDLLRRDDLLDDLLLLUURRLLDDRRRRRRRRUURRDDRRUUUUDDRRLLDDLLUUUULLRRUULLRRUULLRRDDRRRRLLUURRLLDDLLDDDDLLDDDDRRDDDDDDDDLLLLLLDDUULLDDUUUUDDRRRRRRDDLLRRDDLLLLRRRRRRUURRLLDDDDRRDDLLRRUULLLLDDDDRRRRLLLLUUUULLLLLLUUDDDDRRLLLLLLDDRRLLUUUUUUDDDDLLUUDDDDDDUUUURRRRUUUUUUUUUUUURRUUUUDDDDLLDDDDDDDDDDDDRRUURRRRRRRRUURRRRDDRRRRRRLLDDRRLLDDDDDDLLUUDDRRUUUURRDDRRDDLLRRRRRRUULLRRUURRLLDDDDRRUURRLLDDLLLLLLDDRRLLLLLLLLDDUULLLLUURRLLDDRRRRRRRRRRUUUULLUURRUURRDDUULLUURRRRDDRRUUDDRRUUUULLRRDDDDLLLLUULLLLUURRRRUULLRRDDLLLLUUUULLLLLLRRDDLLLLRRRRRRDDLLLLRRRRUULLUURRRRDDDDDDDDDDLLLLUULLLLDDRRLLDDLLLLLLDDLLLLDDUUUURRUUUUDDDDLLLLLLRRUURRLLDDRRDDLLLLLLUUDDRRRRDDDDRRLLLLLLRRRRUUUURRRRRRUURRDDDDDDRRRRLLDDLLLLUUDDDDRRLLUULLUUUURRLLDDDDRRRRRRUULLUUUUUURRRRUUUURRRRUULLLLUULLLLLLUUUURRRRRRUUUULLUURRRRUURRUUUUUUDDRRUUDDRRDDDDUURRUUDDLLUUUUUULLUURRUUDDLLDDRRDDRRRRDDDDUUUULLUUUUDDRRRRUULLUULLUUUUUUUUDDDDLLUUDDDDLLDDLLDDDDUUUURRUUUUUULLUUDDRRUUUUUURRRRDDRRDDUULLLLDDUURRUULLUUUUDDRRRRRRLLUULLUUDDRRUURRDDUULLDDDDLLLLLLUULLRRUURRLLLLLLLLRRRRRRDDDDRRDDLLLLUULLLLUURRLLDDRRDDDDRRLLDDLLLLDDUULLLLRRDDLLRRUURRUURRLLLLRRUURRLLUUUUDDLLDDUUUUUURRLLDDLLUUDDDDDDDDUULLRRUUUURRDDRRDDDDDDRRRRUUUUUURRDDRRDDDDDDDDDDRRUURRDDDDRRRRUUUUDDRRUUDDLLLLUUDDRRDDRRDDUURRDDUURRUULLUUDDRRDDRRDDLLRRDDRRLLLLDDUULLDDLLDDUUUUDDRRUURRRRUURRRRDDDDRRLLLLLLRRDDLLRRRRDDLLLLLLRRDDRRDDDDUULLDDLLLLUUDDDDRRRRRRLLLLLLUURRRRUURRUULLLLDDUULLLLUURRUURRLLDDLLDDLLUUUUUUDDDDDDDDRRDDUULLLLUUDDDDDDDDRRLLUUUURRDDRRLLUULLUULLUUDDLLLLRRDDDDRRDDUUUUDDLLUUUURRRRRRUURRRRRRRRUURRRRUULLUURRUUUURRRRLLDDRRRRLLDDRRRRUURRLLDDLLLLDDRRDDUULLDDLLUUDDDDLLRRDDLLDDUURRUUUURRDDDDRRLLDDDDDDDDUURRLLUUUULLDDDDLLUUDDRRUUUURRRRRRRRLLUURRUULLLLRRRRUULLUUDDRRUUUURRUURRDDUULLDDLLDDDDRRRRLLUURRLLDDDDRRDDLLDDUURRUULLUULLDDDDLLDDLLLLUUUUUUUUUUUULLUULLUUUURRUUDDLLDDRRRRRRRRLLDDRRLLUUUULLUUDDRRRRRRRRDDLLRRRRUUDDDDLLLLRRRRUULLUUUURRLLUULLRRUURRDDUUUUDDLLUUUURRLLUUUULLUUDDRRRRDDUUUULLRRDDLLDDDDDDDDDDDDDDLLUULLLLRRUULLLLLLRRUURRLLDDRRRRUURRLLUURRLLLLLLLLLLDDRRLLLLRRUULLUURRRRRRRRLLLLLLUURRLLUURRLLUURRRRDDRRLLUURRRRDDDDDDUURRDDUULLLLLLRRRRUUUULLLLLLLLDDDDDDLLLLDDUUUURRUUUUDDDDLLUULLDDDDDDLLLLLLDDDDLLRRUUUURRRRRRDDRRLLLLDDUULLDDUURRRRDDDDUURRRRRRDDUULLDDLLRRDDDDUULLRRUUUULLLLUUUUUULLUUUUUULLRRRRRRLLLLDDLLDDDDLLLL
+Correct, you solved lambdaman13 with a score of 9581!
+
+#+end_src
+
+**** DONE lambdaman14
+CLOSED: [2024-06-29 Sat 14:52]
+
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 14
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman14 LLRRUUUUDDLLUULLDDDDUUUURRUUUUUURRUUUUDDRRLLDDLLLLUURRUUUUUUUUUUDDDDLLUUUUDDDDDDDDLLRRUUUULLDDLLDDUUUUDDLLUUDDRRRRUUUUUULLDDLLRRUURRDDDDRRRRDDDDDDLLDDDDLLRRDDLLLLDDLLUUDDRRRRDDLLLLRRRRUULLUUUULLUURRRRUULLLLUUDDLLLLDDUUUURRLLLLDDUURRUURRLLUUUUUULLRRDDRRDDUULLDDDDDDDDRRRRRRRRDDLLLLLLDDLLDDUULLDDUUUULLRRDDLLLLRRDDDDLLRRRRDDUURRDDUURRUUDDDDDDDDDDDDRRDDDDLLRRUURRUUDDLLLLLLUULLRRUULLRRDDDDRRRRUULLUURRRRRRDDRRDDUULLUURRRRDDRRLLUUUURRLLDDLLUULLUULLLLDDRRLLUURRRRDDRRDDLLLLLLLLUULLUULLRRDDLLLLDDUUUUUUDDLLUUDDDDDDLLLLRRUUUULLDDLLDDUURRUUUURRUUUUUUDDRRLLLLRRDDLLLLLLDDUUUULLUURRLLDDDDDDDDUULLDDDDLLRRUUUURRUUUURRRRUURRLLUURRUURRLLLLRRDDRRRRUURRLLUUUUDDRRLLDDDDLLLLLLDDDDLLDDRRDDDDLLDDLLRRDDLLLLLLDDDDUURRLLUULLLLDDRRLLUUUURRUURRLLDDLLDDLLLLRRUUUULLRRUUUULLUUDDLLDDRRLLDDDDRRLLUUUUUURRRRDDDDRRUURRLLUURRRRDDUURRLLUUUUDDRRUUDDLLDDLLLLUULLRRRRUUDDLLUULLLLRRUUUUDDDDRRUUUURRDDRRUUDDLLUULLDDDDDDDDDDDDLLDDDDDDLLLLDDLLLLRRDDDDLLUUDDRRUUUURRUUUULLLLUUDDDDRRLLUURRUUUUUUDDLLUUUUUUDDRRUURRLLUURRLLUULLDDUUUURRRRDDRRLLUURRUUUUUUDDRRDDRRUUDDRRRRRRRRDDDDUULLDDUURRUUUULLUULLRRDDLLLLRRRRRRUURRRRRRDDRRDDLLLLUUDDLLUUDDDDDDUUUURRRRRRUULLUULLLLLLDDDDLLLLLLLLLLUULLDDLLLLLLRRUULLRRUUUULLDDUUUUDDRRDDDDRRUUUURRUUUULLDDUUUULLDDDDUULLRRUULLUUDDRRRRDDRRUUUULLLLUUUUDDRRLLLLUUDDRRDDRRRRDDDDDDDDRRDDUURRRRDDLLRRUULLUURRLLLLRRUURRLLUUUULLDDDDUUUUUUUUDDRRLLLLRRDDRRRRDDRRLLUUUUUULLRRDDRRRRRRDDDDUUUULLLLLLDDRRRRDDDDLLDDUURRDDDDLLRRRRUUUUDDDDRRUUUUDDRRLLDDRRRRLLLLLLLLUUUUUUUULLLLLLDDDDDDDDLLLLLLDDDDLLDDRRRRDDLLLLLLDDRRDDDDDDLLDDDDRRDDDDRRDDRRDDDDLLRRDDRRUUUURRRRDDUULLDDDDDDLLRRUURRDDRRUUUUDDDDRRRRDDUULLLLLLUULLUUUULLDDDDLLDDLLUUDDLLLLDDUURRRRRRDDLLRRRRRRLLDDLLLLLLUUDDLLRRRRDDRRRRLLLLLLLLRRRRDDDDLLUUDDLLUUDDRRRRRRRRDDUURRLLUURRLLLLRRDDLLDDLLLLLLRRDDDDDDUULLDDUUUUDDRRUURRRRDDUULLDDDDDDLLDDRRLLUULLDDUURRRRUUUUUULLUURRRRUULLUUUUUURRRRRRDDRRUURRUURRLLLLRRDDLLDDDDDDDDRRDDRRUURRRRUUDDDDRRLLUULLLLUURRLLLLUUUUDDRRUUUUDDDDRRUUUURRLLDDDDRRRRUULLRRDDRRUUDDDDLLRRUURRUUDDDDDDRRUUDDDDRRUUDDDDRRDDUULLLLDDUULLDDDDLLRRUUUUUULLUULLRRDDDDDDUULLDDDDUUUURRUURRDDRRRRUULLUULLUUUULLLLLLLLLLLLDDRRDDDDLLUULLDDLLUUDDLLRRDDDDDDLLUUUUDDLLDDDDRRLLUUUURRDDRRUURRUURRDDUULLDDDDRRDDRRUURRRRLLUULLRRRRUULLUUDDLLRRRRDDLLDDLLDDLLDDLLLLUURRLLDDDDDDLLRRUURRRRLLLLLLLLDDLLDDDDDDUULLLLRRUUUUUURRLLDDDDLLUUUUUURRRRRRRRLLLLLLLLDDDDDDRRDDRRRRRRRRDDDDDDRRDDUULLUUUULLLLDDLLDDLLLLDDUUUUUUDDRRUUDDLLDDRRRRUURRUURRDDDDLLDDLLDDUULLDDUURRRRDDDDLLLLLLUUDDRRRRRRUURRDDUUUUDDRRUUDDRRRRDDRRUUDDRRLLLLLLLLRRRRUULLLLLLLLUUUURRUUUURRUULLLLLLUUUURRUURRRRUURRRRRRDDRRLLDDLLDDUURRRRRRUUUULLRRDDRRRRLLUURRUUDDRRLLLLUULLLLRRRRDDDDDDDDLLLLDDRRDDRRRRDDUULLUURRUUDDLLDDLLUULLUULLDDLLRRDDRRDDRRDDUURRDDRRLLUULLLLUULLLLLLDDRRRRLLLLUUUUUUUUDDLLLLLLRRRRRRDDDDRRRRUUUURRRRRRUURRRRUUDDDDRRLLDDRRLLDDDDUURRLLUUUUUURRRRLLUUUUUURRLLLLRRUURRUUDDLLDDDDRRRRDDDDUULLRRRRRRLLUUUULLRRUULLRRDDDDRRRRDDUURRDDUULLLLLLDDDDRRLLDDDDUULLLLRRRRRRRRDDLLRRUUUURRLLDDRRDDRRRRUUUUUUUUDDLLUUDDDDDDUUUURRRRUUDDRRRRRRLLUULLRRDDLLLLDDRRDDRRUUDDLLDDRRDDLLRRUURRRRDDDDRRLLUULLDDUURRRRUUUUDDDDRRUURRDDDDLLRRDDLLDDUULLRRRRUURRUUDDRRDDDDLLUUDDLLDDDDRRLLLLUUDDLLLLLLRRRRUUUUDDLLUULLRRUULLRRDDDDRRDDRRRRUUUURRRRUUUULLLLUUUULLDDLLLLUULLLLLLUUUULLUULLDDDDDDLLLLDDDDUURRDDDDUUUURRRRUUUUDDDDLLDDDDDDRRUUUUDDRRUURRDDUULLDDLLDDRRRRLLDDDDRRUURRLLDDLLUULLDDUULLDDLLUULLUUUUDDRRLLDDDDLLUUDDLLLLLLRRRRUUUUUUUUUURRLLDDRRDDDDUUUULLLLLLUUUUDDRRLLLLUUDDRRDDDDRRDDDDUULLDDUURRUULLUULLLLRRDDLLDDRRDDUULLLLUUDDLLLLRRRRDDRRDDRRLLLLRRUULLLLDDLLRRUULLLLDDUUUUDDLLUULLLLUURRRRLLLLDDRRRRDDRRRRRRRRUURRUURRUURRRRRRDDDDDDDDRRRRUURRDDRRUURRRRUULLLLUUUUUULLLLUUUULLLLLLUUUULLUULLLLDDDDLLLLLLUULLDDLLLLUUUULLUUUULLUULLUUUURRUUUUUUUULLUULLUULLUUUUUUUUUURRUURRRRRRRRRRRRDDLLRRRRRRDDUULLDDDDLLUULLRRDDLLDDLLRRUULLUUDDRRRRDDRRLLDDRRDDLLRRUURRUUDDRRUURRLLUULLRRDDDDDDLLDDLLRRRRRRRRLLLLLLUURRRRUURRUURRDDUULLUULLRRRRRRLLLLUUUUDDRRLLLLUUDDLLUUDDRRRRDDDDDDDDRRDDDDLLLLRRDDDDUULLRRUURRDDDDRRDDRRUUDDLLDDLLUUDDRRRRDDRRLLUULLUUUULLUUUUUUUURRDDRRLLUUUUUUDDDDRRUURRLLUURRRRDDUULLLLDDDDRRRRLLDDRRDDDDRRLLUURRUUDDLLLLLLLLDDRRLLUURRRRDDDDDDRRRRUULLRRRRDDRRLLUUUUUUUUUUUULLDDUURRDDDDDDDDRRDDRRRRLLUUUULLRRUUUURRLLLLDDUURRDDRRRRDDUUUUUURRDDRRRRLLUURRLLDDDDLLRRRRDDRRLLUULLUULLUUUURRLLLLLLDDLLUULLDDUULLRRRRUUUUDDLLUUDDLLLLDDUUUUDDLLRRRRRRRRDDDDRRUURRRRDDLLDDDDLLDDDDRRDDDDRRLLDDLLLLUURRLLDDRRDDDDDDDDUULLRRUURRDDUURRLLLLUURRRRUUDDRRLLLLLLLLDDUULLUULLLLDDUURRRRDDDDLLUUDDLLDDDDRRLLUURRRRDDRRLLUULLLLLLDDLLRRUULLLLDDUUUULLUUDDRRDDRRUURRUUUULLRRDDDDLLDDRRRRUURRRRUURRRRUURRUUUUUURRRRLLUURRLLDDDDRRRRUUDDRRRRLLDDLLLLDDUURRRRDDRRUUDDRRRRDDRRUUUUDDDDLLUULLUUUUUURRUUUUUUDDDDLLUUUUDDDDLLDDLLRRUUUUUUUULLDDDDUUUURRDDDDDDRRRRDDLLDDRRDDUURRUURRLLUURRLLDDDDRRDDDDUURRDDDDLLRRRRDDLLLLRRRRUULLUUUUUURRUURRLLUURRLLLLDDUURRDDDDLLDDLLUULLLLLLDDDDLLLLLLDDDDLLDDDDUULLRRRRDDDDLLDDUULLLLUURRLLDDRRRRRRUURRDDUURRRRUUUURRDDUURRLLLLLLDDUUUURRLLLLRRDDLLDDUURRRRDDDDDDRRUUDDDDDDUURRDDRRUUUUDDDDLLDDDDLLUUDDDDLLRRUULLLLUURRLLUURRLLUUUUDDRRLLLLLLRRRRDDLLDDLLRRUULLLLLLUUDDLLDDRRLLUURRRRRRRRRRDDDDRRRRRRUUUUUUUUUUUUDDRRUUDDRRUURRDDUURRRRDDRRLLLLRRDDLLLLLLRRRRRRRRDDDDRRLLLLUULLDDUURRDDRRUUUULLUUUUUULLRRRRRRRRLLLLUULLUULLDDUULLRRRRDDRRRRRRLLUUUURRDDUURRLLLLDDDDLLUUUUUURRLLDDLLUULLDDLLRRUURRUURRRRLLUURRLLDDLLDDDDRRDDDDDDDDRRRRLLDDDDDDUUUURRDDRRRRDDDDDDLLRRUULLUULLDDUURRDDRRUUUUUURRLLLLRRUULLRRUULLRRRRDDUURRDDUURRDDUULLUURRLLUURRLLDDDDLLLLDDDDDDRRDDDDDDDDUUUUUUUURRDDDDRRRRLLLLUUUUUURRDDRRDDLLRRRRDDDDLLDDDDRRDDUUUUDDLLLLLLUUDDRRUUUULLRRDDDDDDDDLLRRUURRDDDDRRUUDDDDDDUUUULLDDLLDDRRLLLLUUUURRLLDDDDRRUURRUUUUUULLLLLLDDUUUUDDLLLLRRUULLRRUULLLLDDDDLLDDLLRRDDLLRRUURRRRDDDDRRUUUUDDDDRRUUDDDDLLLLRRRRUULLLLUUUULLDDDDDDLLRRUULLLLDDLLUULLLLDDRRLLUUUUUUDDDDRRRRDDRRUURRRRUUUULLUULLUUUULLUULLRRDDRRDDRRUUUURRLLLLRRDDDDLLDDLLUUDDDDLLDDRRLLUURRUULLUUUUDDDDLLUULLRRUUUUUUUULLRRDDLLDDUURRDDDDLLLLUUDDDDLLRRDDRRLLLLLLDDDDDDLLLLRRDDRRLLUURRUUUUUURRDDDDUURRRRDDLLRRDDLLLLDDRRRRLLLLUURRRRUUUULLLLUURRUUUURRRRDDDDRRRRRRRRRRUUUURRRRDDDDRRRRRRUURRUUUURRUUUULLUURRUULLRRUUUUUUDDLLDDUUUUUURRUULLLLLLUUUUDDDDLLDDDDLLRRUUUULLDDLLDDUURRUUUULLLLRRRRDDRRUUUULLLLRRRRUURRUUDDLLUUUURRLLDDLLDDUUUUDDLLDDLLDDUUUUDDRRUURRRRDDDDDDDDRRRRRRUURRLLLLRRUULLUURRUURRDDDDUUUULLDDLLUUUUUULLLLRRUUUURRDDRRDDDDUURRDDUULLUURRUULLRRDDLLLLUULLLLUURRRRLLLLUURRUURRUURRLLLLLLDDUURRRRUULLRRRRRRDDUULLLLDDDDDDRRDDRRUUUULLRRDDDDLLUULLUULLDDLLDDDDDDLLDDLLDDUULLDDUULLDDDDUUUURRRRRRUULLUULLDDUUUUUURRDDUURRUUDDDDDDUUUULLLLUURRLLUURRRRLLUULLLLDDUULLDDDDRRLLUUUULLDDDDUUUURRRRRRRRUULLLLRRUULLUUDDRRUUUUUUUUUUDDDDDDLLUUDDLLLLUUUUDDRRLLDDRRRRRRRRUUUUUUDDRRUUDDLLDDDDDDDDUURRDDDDDDRRUUUUUUUULLUURRLLDDRRDDDDRRDDRRLLUURRRRDDRRUUDDLLUULLUULLRRUULLRRDDRRUURRDDUULLUULLUULLDDUUUUUUDDLLDDUUUULLRRUUUUDDDDDDRRDDRRUUUUUUDDDDRRDDUURRDDDDUUUULLUURRLLUURRUUDDLLUULLLLDDUURRUURRRRLLUURRLLDDLLUULLDDLLRRUURRDDDDRRDDDDDDLLDDDDRRDDDDLLDDLLLLDDDDLLUUUUUULLUULLDDDDDDRRDDDDLLDDDDDDDDLLDDLLDDLLDDDDDDUUUURRDDUULLLLDDLLUUDDLLLLUUUULLLLRRDDDDUUUURRDDDDRRRRRRUURRUURRUULLLLDDLLLLDDUUUUUURRDDUULLUUUUDDRRUURRLLDDRRDDUURRDDRRLLUURRRRLLUURRLLLLRRDDLLLLLLLLLLDDDDUULLLLRRDDLLLLDDUUUUDDLLUUDDRRRRRRUURRUUUUUULLLLRRRRRRRRRRLLLLLLUURRRRRRLLLLUULLLLDDUURRRRUURRDDUUUUUUUULLRRRRUUDDLLDDLLDDUULLUUDDRRRRDDRRUURRRRDDLLRRDDLLLLDDUURRRRUUUULLLLDDLLDDLLDDDDLLDDDDDDLLUULLDDUULLUUUURRLLLLDDUUUULLLLUUDDRRRRDDRRUURRLLUUUUUURRDDUURRDDRRDDLLLLRRRRUULLUULLLLDDDDLLLLUULLRRDDRRUUUUUULLDDLLUUDDLLDDUULLDDLLUUUURRRRLLUURRLLDDLLUULLDDLLRRDDLLRRUUUURRUUUUUUUUDDDDLLUUUUUUDDDDLLUUUUDDDDRRDDRRDDDDDDDDDDRRDDRRLLLLLLUUDDRRDDLLRRDDRRUURRLLDDRRDDRRRRUULLRRDDLLLLUULLLLLLDDLLRRDDDDRRDDLLRRUULLUUUURRRRDDLLRRRRRRRRLLLLDDDDLLUUDDRRRRDDUURRDDUULLLLUURRRRRRUUDDRRLLLLLLLLUULLUULLLLUURRUUUURRUUUURRRRRRUURRRRUURRLLUURRLLLLLLRRRRUUUURRDDUULLUURRRRRRRRLLLLLLLLUURRLLLLUUUULLRRRRDDRRRRDDUURRDDUULLLLLLUUUURRRRDDLLRRRRRRDDRRDDLLRRUULLUURRRRDDUUUULLLLLLRRRRUURRLLLLUURRUUUURRDDUULLDDDDLLLLLLDDRRLLUURRUULLLLDDLLUUDDDDRRLLLLDDUULLDDUUUULLDDUULLRRRRDDRRUUUULLUUUUDDRRRRLLLLDDLLLLRRUUUUDDLLLLDDLLUUDDDDDDUURRLLUURRUURRUULLUUDDLLRRRRUUUURRRRDDLLRRUULLLLLLLLDDLLUUDDRRUURRRRDDDDDDRRDDRRRRDDDDRRUURRUURRRRDDRRDDRRDDRRRRRRDDUURRLLLLDDDDRRRRLLLLUUUUUUUULLRRRRUULLRRUULLRRUUUUUURRRRDDUULLLLDDDDLLUUUUDDLLRRDDLLLLLLUULLUUDDRRUURRDDUURRLLLLDDDDLLDDRRDDUULLUULLUUDDDDLLRRUULLLLRRUULLRRUURRLLLLLLDDDDUUUURRRRDDDDRRRRRRRRRRRRRRDDDDDDRRDDLLRRUURRRRRRUUDDDDLLLLDDUURRDDDDRRRRLLLLLLLLRRRRDDRRLLLLRRDDLLRRDDRRUUDDLLLLLLUUDDLLUULLLLRRDDLLLLRRRRUURRDDRRDDRRRRLLLLDDDDUULLDDUULLRRUULLLLDDUULLDDDDRRLLDDLLRRUULLUUUULLDDLLUUDDRRDDLLDDRRLLDDLLRRUUUURRUUUURRDDDDRRUUUURRRRRRDDRRUUUURRRRUUUUUUUUUURRDDRRUUDDRRUUUULLUUDDRRUURRDDDDDDUUUUUUUULLLLLLLLDDUUUUUUUUDDDDLLDDLLDDRRLLUUUUUUDDDDRRUURRRRUUUURRDDDDUUUURRDDRRRRUURRLLLLRRDDRRDDUULLDDLLLLRRRRDDRRDDDDDDDDLLUUUUUUDDDDDDRRUUUUUUUULLUUUULLLLUULLLLDDDDLLDDRRRRRRRRDDLLDDDDDDLLLLUUUULLLLLLLLLLDDDDLLDDLLLLLLLLUULLLLDDLLDDDDRRDDDDDDLLUULLRRUULLRRDDDDLLLLDDLLRRDDRRRRLLLLUUUULLLLDDUUUUDDRRUUUULLRRRRDDUUUURRUUDDLLUULLLLDDRRLLLLUUDDRRUUUULLRRUUUURRDDDDUURRDDUULLUULLDDLLLLUUDDDDDDLLRRUULLLLLLLLRRRRUURRUUUURRLLLLRRUURRLLDDDDDDLLUULLLLUUDDRRDDLLLLDDLLLLRRDDLLRRUUUULLLLRRUUUURRUULLLLRRRRUURRDDDDDDLLRRUUUUUURRUULLUUUURRDDUURRDDUURRRRDDLLDDRRDDRRUUDDLLLLLLUUDDRRDDLLDDUULLRRRRUURRUULLUURRUULLLLLLLLDDDDRRDDLLLLUUUUDDLLDDUUUULLUURRRRLLLLDDRRDDLLDDLLDDLLRRUUUUUULLLLRRUURRLLLLRRDDDDDDLLUULLLLUURRUULLRRDDLLLLLLDDUUUURRLLLLLLRRRRDDRRDDDDRRRRDDRRLLUULLDDDDLLLLRRRRRRRRRRRRLLLLDDLLLLRRRRRRRRRRUUDDLLLLLLDDRRDDDDUURRUUDDRRLLLLUULLLLLLLLDDUULLRRUULLRRDDRRRRDDLLRRDDLLRRUURRDDDDLLDDUURRRRRRDDUULLDDLLRRDDRRLLUUUULLUUUULLUURRUUUULLLLUUUULLDDLLLLRRUULLUUUUDDLLLLDDRRLLLLRRDDRRLLUUUULLLLUURRUULLLLRRRRRRDDRRLLUULLDDLLDDLLUULLDDDDRRRRLLLLLLDDRRLLUURRUUUULLUURRLLLLLLDDDDUURRDDRRLLDDLL
+Correct, you solved lambdaman14 with a score of 9497!
+
+#+end_src
+
+**** DONE lambdaman15
+CLOSED: [2024-06-29 Sat 14:53]
+
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 15
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman15 LLLLDDLLUUDDLLUULLLLUUUUDDRRLLDDLLLLUUDDRRRRRRDDLLLLDDRRLLUURRRRUURRDDRRRRRRRRLLDDDDUURRDDRRUUUUUUUURRLLUUUUDDLLUUDDRRDDDDRRDDDDUURRDDUURRLLLLUULLDDDDDDRRRRRRDDUULLDDDDDDUURRRRUUDDLLLLUUUULLDDDDDDUUUULLLLDDLLRRRRDDDDDDRRLLUULLDDDDRRRRLLLLUUUURRRRRRRRRRLLUURRLLDDDDLLDDUURRUULLLLLLUUUULLUURRRRUULLLLUULLLLDDLLRRDDDDUURRLLLLDDLLDDUURRUURRUUUULLLLLLRRDDLLDDRRLLLLDDRRLLDDLLUULLUUDDRRDDDDLLLLDDUURRRRUURRDDDDRRDDUURRLLUUUUDDRRRRDDUUUUDDRRUURRRRLLLLDDRRDDDDUULLDDUURRUULLLLLLLLDDLLUUUUUUUUUULLDDUULLLLUURRUULLUUDDLLDDLLLLDDUURRRRUURRRRDDLLDDDDLLUUDDDDDDDDUUUURRDDRRLLUULLUULLUUDDDDDDLLUULLUURRLLDDLLUUUURRLLLLLLLLRRRRRRUULLLLLLUUDDRRRRUULLRRRRUUDDRRDDUULLLLUUUUUUDDLLDDLLUUDDRRUUUULLRRUULLRRDDDDRRDDDDDDRRDDDDLLLLLLDDUURRRRDDDDLLUUDDRRDDLLLLUUDDRRRRDDLLLLRRDDRRLLDDDDUURRRRDDUURRDDDDLLRRUUUUUULLRRUULLUUUUDDRRUUDDLLDDRRDDDDRRDDDDRRLLUUUURRUUUUUUDDDDLLUUUUDDDDRRDDDDRRDDRRLLUUUUUUUUDDDDDDLLUULLLLLLLLLLUULLDDDDDDDDDDDDDDUURRUUDDRRDDRRLLUULLDDDDLLRRDDLLDDRRRRLLLLUURRUUUUUULLUUUUUURRDDUURRUUDDDDRRRRDDLLLLRRDDRRDDUULLUURRRRDDUUUURRRRRRDDUULLLLLLDDRRDDDDLLDDDDDDUULLDDUULLDDUUUURRLLLLDDUURRDDRRRRUURRDDDDRRRRLLUUUUDDRRLLDDLLUUUULLUURRUUUURRDDRRDDLLRRUURRRRLLUUUURRUURRUUDDDDDDLLRRUUUULLLLUULLRRUULLRRUULLRRUURRDDRRLLUULLDDDDDDDDRRDDLLDDDDDDRRDDRRDDUURRDDUULLLLDDDDRRRRRRUUDDLLLLLLLLUUUULLRRDDDDRRUUUUUURRUURRDDRRRRUUDDLLDDRRRRRRDDUUUULLRRDDRRUUDDLLLLDDLLDDRRRRLLLLUURRUULLLLUUUUUURRLLUULLDDUUUUDDRRUUUULLUULLLLDDUURRRRDDRRDDRRRRRRRRUUDDRRLLDDRRLLUULLLLUURRLLLLUUUUDDLLUUDDRRDDRRDDDDLLRRDDDDUURRUUDDDDRRUUDDRRRRUULLRRRRRRLLDDRRLLDDLLLLDDRRLLDDRRLLDDRRLLUULLDDUURRUUUURRRRRRDDLLRRRRUUDDRRRRDDLLLLRRDDLLLLLLUURRLLDDRRRRRRUURRUURRDDDDLLRRUUUURRRRUUUUDDDDLLDDDDUURRDDUURRDDRRRRLLLLUULLLLUULLLLLLUURRRRRRUULLLLRRUURRRRLLUUUUDDDDLLUULLDDUUUUDDRRUUUUUULLDDLLDDDDLLDDRRLLDDRRLLUUUULLLLUULLDDUURRDDRRRRRRUUUULLDDLLUUUUUUDDRRUUUUDDDDLLLLDDLLUULLDDUULLLLLLRRRRRRRRDDRRUURRDDDDRRUURRRRUURRDDDDDDDDDDRRDDLLLLLLDDLLLLUULLUUUULLDDLLLLLLUULLUUUULLLLDDDDDDDDLLUULLDDLLLLUULLLLUULLLLLLUULLLLUULLLLUUUUUURRUURRUUUUUUUURRDDRRRRDDRRUUUURRRRUURRRRRRDDRRUURRUURRRRRRUULLUURRRRUULLLLRRUUUUUULLRRRRUULLLLUUDDRRRRDDLLDDLLDDUULLDDDDLLUUDDRRUUUULLLLDDUURRUURRLLUURRLLLLDDUURRUURRUULLUURRRRUURRLLDDDDRRDDUURRDDUURRRRDDDDDDDDUUUURRDDUURRLLLLLLDDUUUUDDRRUURRRRLLUUUURRUURRLLDDRRDDLLRRDDRRDDUUUUDDLLDDDDLLRRRRRRUURRDDUULLDDLLDDLLLLLLDDLLRRDDDDUUUURRDDDDRRLLUURRUUDDLLUULLUURRRRRRRRRRDDDDLLRRUULLLLDDUURRRRRRUUUUUUDDDDRRUUUUDDDDLLDDRRDDLLDDLLLLLLRRDDRRLLLLLLDDLLRRRRRRRRRRUUDDDDDDUULLDDLLLLDDUUUURRLLLLRRDDRRDDDDDDDDUULLUUDDDDDDDDUURRLLUUUURRUUUUUURRDDRRDDLLDDDDDDRRDDDDRRLLUUUULLUURRUUDDRRRRUULLRRDDRRUUUUDDDDRRUUDDDDRRUUUUUULLRRDDDDDDLLUULLDDDDLLUULLDDUURRDDRRRRRRLLDDLLLLDDLLRRDDDDUULLRRUUUURRDDRRDDLLRRRRRRDDLLLLDDUURRRRDDDDLLUUDDRRDDLLLLDDLLUUDDRRUUUULLUUUUDDDDLLDDUUUUDDRRRRDDRRRRUUUUUUUURRDDRRRRRRRRDDUUUULLUUDDRRDDLLLLLLDDRRLLLLDDUURRDDDDLLRRUURRDDDDRRUUDDLLDDLLUULLLLDDRRLLUULLDDUURRRRRRDDRRUUUUUURRUUDDRRRRDDLLDDDDLLRRRRRRRRLLLLUURRUURRDDUULLUURRRRRRLLLLUULLLLUUDDRRUUUULLRRDDDDRRUURRDDRRUUDDLLUULLDDDDLLDDDDLLDDLLUUUURRUULLLLLLLLUUUUUURRUULLLLLLLLRRRRRRUURRUULLLLDDLLLLRRRRUULLUUUUDDDDRRUUUUUULLUUUURRLLLLRRUULLRRDDDDDDRRDDRRDDUUUUUUUUDDLLRRRRDDDDDDRRUUUUDDDDLLUUUUUUUUUUUULLDDUULLDDUURRRRRRRRUUDDRRLLLLDDRRRRLLLLUULLUUUUDDRRUUDDLLLLLLUURRUURRRRRRRRLLLLLLLLDDLLDDRRRRDDDDDDDDLLDDDDLLDDDDRRRRDDLLDDRRDDLLDDLLUULLLLLLUULLUURRUULLUUUULLLLLLLLUUUURRUULLUUUURRRRRRDDRRRRDDUULLDDLLDDUULLDDUUUUDDRRRRUUUURRLLUURRRRRRLLDDRRLLUUUULLRRDDLLLLDDDDLLUUUULLUUUUDDRRUUUUUUDDDDRRDDUURRUULLRRUULLRRRRRRRRLLDDDDDDUUUULLDDUURRUUUURRUULLRRRRRRDDRRRRLLDDLLRRDDLLRRUURRDDUURRLLLLUULLLLDDDDLLDDUURRUUUURRUULLUULLRRRRRRDDUURRRRDDDDUULLRRUULLLLUUUULLDDLLLLRRRRUURRDDDDLLLLDDLLDDLLLLUUDDLLUULLDDLLRRUULLUUDDRRRRUURRLLLLUULLRRUUUULLUUDDRRDDRRUUUUDDDDLLLLLLDDUULLRRRRRRDDDDRRUURRUURRDDDDUUUURRRRLLLLLLUUUUUUUULLRRDDLLLLDDUUUUDDRRRRDDDDRRRRRRLLLLUUUUUURRDDRRLLDDRRLLUUUURRUURRDDUUUUUUDDLLRRDDRRRRRRDDUULLDDLLDDLLRRRRRRDDLLDDRRLLLLLLUURRLLDDRRRRDDRRDDLLRRRRUUDDRRRRLLLLLLUULLUUUURRRRDDRRLLUUUUUURRLLUURRUULLUUDDRRUUUUUUUUUULLRRUULLRRUULLLLUULLRRUULLRRDDDDRRRRDDDDDDDDLLDDUUUULLDDDDDDDDLLLLUURRLLDDRRRRUUUULLUUUUUURRUUDDLLDDLLDDUUUUDDLLUUDDLLUUUULLLLLLRRRRRRRRRRRRLLLLUULLRRRRUUDDRRLLLLUUUURRLLDDDDDDLLDDDDLLDDRRLLUUUULLLLRRDDDDLLUUDDDDDDUULLUUDDRRUURRDDRRRRDDUURRUUDDRRLLLLLLLLUUUUUURRDDRRRRRRRRDDDDRRUUUURRDDRRDDDDRRRRDDLLRRDDRRLLLLRRUURRUUUUUUDDDDDDRRDDDDUUUULLLLUUUULLUURRLLUUUUUUDDRRDDRRRRUUDDRRRRDDDDLLDDDDUUUULLDDUUUURRLLDDRRRRUURRUUDDRRUURRDDUUUUUUUULLLLLLDDDDRRRRLLUURRLLDDLLUUUULLUUDDDDDDUUUULLLLDDDDUURRLLUUUUUUDDRRUUDDLLDDRRRRRRRRRRUULLLLUULLRRRRRRRRDDUULLUURRLLLLUURRUULLRRRRDDUULLDDLLLLDDUULLDDUURRUUUURRLLUURRLLLLLLLLRRRRRRDDDDLLLLDDDDUUUULLDDLLRRUUUURRRRLLLLDDLLLLDDUUUURRLLLLDDUULLUUUUDDRRUUUURRUUDDLLLLUURRLLDDRRDDDDRRRRUULLRRUUUURRDDUULLDDDDRRRRUUUUDDDDRRUUUURRRRDDUURRLLLLDDDDRRRRDDDDRRLLUUUURRDDUUUUUUDDLLRRDDLLLLLLUUUULLDDDDLLLLLLDDLLLLLLDDRRRRDDRRRRRRRRRRDDRRDDRRDDLLLLDDRRRRDDRRDDDDDDLLDDLLDDRRLLDDDDLLUUDDRRUURRRRUUDDLLDDDDRRUUDDDDLLDDRRLLLLUUUUDDDDLLDDUUUUUUDDDDLLDDUUUUUUDDDDRRRRDDDDLLRRRRUURRDDUULLDDDDRRDDDDUULLDDUULLDDUULLDDUULLUURRRRLLLLDDLLUULLRRDDLLLLUULLLLRRUUUULLRRUUUUDDLLRRRRUUDDRRUUDDRRLLLLDDDDRRUURRLLDDRRRRLLLLLLUUUULLDDDDDDRRDDRRRRRRDDDDRRRRDDRRLLUURRRRDDUULLLLLLLLDDLLLLRRUUUULLRRDDLLLLDDUULLUURRLLLLLLRRRRDDRRRRRRDDRRRRDDDDRRUUDDRRUUDDRRUUDDLLDDRRDDUULLDDDDRRLLLLUUDDLLUUDDRRRRUUUUUULLDDLLLLLLRRUUUULLLLLLRRRRDDLLLLLLUUDDLLDDLLUULLRRDDRRUUUUUUUUDDRRLLDDLLUUUUDDDDRRDDRRRRRRRRUURRDDDDDDDDDDRRLLDDLLUUUUUULLUUDDDDDDDDUUUULLUULLUURRLLDDLLLLDDRRLLUULLDDUULLRRRRRRRRRRDDDDLLUUDDLLLLRRRRRRDDLLDDRRLLUULLLLRRDDLLLLRRDDLLLLUUDDLLUUDDRRDDDDDDUUUUUURRRRDDLLRRDDRRLLLLDDDDLLLLRRDDLLRRUURRDDRRDDLLLLRRRRUULLUURRUUDDRRRRDDLLRRDDLLRRUURRDDUUUUDDLLUULLLLLLUUUURRUUUUUURRUURRRRUUUURRUURRDDDDDDRRDDLLDDLLUUDDLLLLLLDDUURRRRDDDDUULLDDDDRRLLLLRRUUUURRUURRRRUURRDDRRUUUUDDRRRRRRUUDDLLDDRRDDUULLUUUULLRRUURRLLLLRRDDDDLLLLDDLLDDRRLLDDDDLLLLRRUUUULLDDUURRDDDDDDLLRRRRRRUUUUDDRRUUUUUUDDRRLLDDRRRRLLDDRRDDUULLUULLDDLLDDLLDDRRLLLLLLDDDDLLLLLLRRRRRRDDRRDDDDLLUUDDDDLLLLRRDDDDUULLDDUURRUURRRRDDLLDDRRLLUURRUURRDDUUUURRLLUUUUDDRRRRDDDDDDRRDDRRLLUULLDDLLLLRRUUUUDDDDRRUUUUUUUULLLLDDDDLLLLUURRUUUUUUUUDDRRUURRLLDDRRDDRRRRDDDDUURRDDDDDDUULLRRUUUUUUUUUUUULLUUDDLLUUDDDDRRDDLLRRUULLUURRRRDDDDDDDDLLUULLLLUULLLLDDLLUUUUUURRRRUULLUURRUUUUUUUUUUUUUUUUUURRRRUULLUUUULLUUUUUURRRRRRRRUULLUULLUUUURRUURRUULLUUUULLUUUULLUULLLLLLLLUUUUUUUULLDDUULLLLUUDDRRRRUUUURRDDUURRLLLLLLDDUUUUDDLLUULLDDLLRRUUUURRLLUUUUDDDDDDLLLLDDLLUUUUDDLLDDLLRRDDLLRRDDLLDDLLUULLUURRLLUURRLLLLRRDDLLDDUURRDDRRDDRRUURRUUUUUUUUUUUULLUULLLLUUUUDDLLLLLLRRRRRRRRUUDDRRUURRDDRRUURRLLDDLLUULLDDLLLLDDRRRRRRRRDDUURRDDDDDDUULLRRUURRDDDDUUUUUURRUUUULLDDLLRRUURRDDDDLLDDLLUULLLLLLDDLLDDDDDDUURRDDUUUUDDLLUULLUUDDDDDDLLRRUULLUULLLLUURRRRLLLLUURRRRLLLLLLDDUUUUUURRRRRRLLLLLLDDLLLLUURRLLDDRRRRDDRRDDDDLLLLUUDDLLUUUURRLLLLDDUULLLLDDRRLLUURRRRRRDDDDRRDDLLDDUULLDDLLDDUUUULLRRDDLLLLLLLLRRDDLLRRUURRRRRRRRUUUULLLLLLDDUULLUURRLLDDDDLLLLDDDDDDDDLLLLRRUUUUUUUUDDDDDDDDRRUUUUUUUURRRRUULLLLUULLLLDDRRLLUURRRRRRUURRUULLUUDDRRRRDDUUUULLRRRRDDUURRDDUURRDDUULLLLLLDDLLDDLLDDLLDDRRRRRRRRRRRRDDRRRRUURRDDDDLLRRUURRDDDDRRUUUUDDDDDDDDLLRRDDRRRRLLLLDDDDUULLLLRRRRRRDDDDUUUULLUUUUUULLLLLLUURRLLDDDDRRDDRRLLUULLLLLLLLUURRRRLLUURRLLDDLLDDRRRRRRDDLLRRDDLLRRDDLLDDRRLLDDLLUUDDRRUUUULLUULLLLUURRRRLLLLDDRRRRDDLLLLLLDDRRDDUURRLLLLLLDDDDLLDDUUUUDDRRDDDDDDDDLLLLUURRLLLLDDUULLUUDDLLRRRRRRUURRLLLLUUUUDDRRLLLLLLRRUULLRRDDRRDDRRDDDDDDLLRRRRDDLLLLDDLLRRRRRRLLLLUURRRRUULLUURRRRUURRDDRRDDUULLDDLLDDUURRUUUUUURRRRDDLLRRUUUUUUUUDDLLDDUULLDDUUUUDDRRRRDDDDRRDDDDDDLLUUDDDDDDUURRDDDDRRLLDDRRRRLLLLUUUUUURRDDUURRRRDDLLRRUUUURRLLDDLLUULLUUUUDDDDRRUURRUULLRRUUUURRLLLLDDLLRRUURRUUUULLRRUUUUDDDDRRUUUUDDDDRRUUDDDDLLRRUULLLLDDLLLLLLDDRRLLUURRRRRRDDDDRRDDDDUUUURRDDUURRUULLRRDDDDRRUURRDDUUUUDDRRDDUUUUDDLLLLDDLLUULLLLLLDDDDLLDDDDLLLLLLUURRUUUUUULLLLLLDDLLUUUUUUUUUURRUULLLLUULLRRDDDDLLUUDDDDDDUUUULLDDUURRRRUURRUUUURRDDUULLLLUUUURRRRUURRLLDDLLDDRRRRUUDDLLLLUULLDDDDLLLLLLLLRRRRDDDDLLLLDDDDRRUUDDLLLLDDDDDDRRLLLLRRDDLLDDLLUUUUDDDDLLLLRRRRRRUURRUUUUUUUULLDDDDUULLDDUULLDDUUUUUUDDLLRRDDLLLLLLRRUULLRRUURRLLUUUUDDDDLLLLDDDDUUUUUURRUULLRRDDLLLLLLUURRLLDDRRRRDDLLDDDDUULLDDLLRRDDRRLLUUUURRUULLLLDDLLLLRRDDDDRRLLUULLDDDDDDUULLDDLLRRUURRUUUULLLLRRDDLLDDUURRUUUUUULLDDUURRDDDDRRRRUURRUURRRRRRRRRRDDDDRRDDDDRRDDUULLDDLLUUUUDDDDDDLLDDUURRDDRRRRDDLLRRUURRDDUURRDDRRLLUURRRRLLUURRRRDDUULLLLDDLLLLLLLLLLDDLLLLUULLRRDDRRDDLLRRDDLLRRRRUUDDRRUUDDRRRRDDUUUULLRRDDLLDDDDUULLLLLLLLRRRRDDLLRRDDRRUUDDLLLLDDRRDDLLDDUURRRRDDUUUURRUUDDLLDDLLUULLUURRUUUURRRRUULLLLLLUUUURRUUUUUULLUUUULLRRDDDDLLDDUUUUDDLLDDUULLRRUULLLLDDLLUUDDDDRRDDUURRLLLLDDDDDDDDLLRRUURRUURRUUDDDDRRUUDDDDDDUUUULLUULLDDDDRRLLDDRRLLDDRRDDDDLLRRRRDDUUUURRUULLRRDDLLDDLLDDLLDDDDUULLRRUULLUULLRRDDRRRRDDRRLLDDDDUURRDDUURRUUUUUUDDDDDDLLLLUUUUUUUUUULLLLUULLRRDDLLDDRRRRLLLLLLLLRRRRUULLLLUUUUDDRRUUUULLUUUUUUDDDDDDRRRRUUUUUULLRRDDLLDDUURRDDDDLLDDDDLLDDRRRRRRRRUUUUUULLUUUUUUUURRUURRRRDDRRRRRRRRUUUUUURRRRRRUUUURRLLLLDDUUUURRLLUULLUURRLLDDRRDDLLLLUUUULLLLUULLDDLLLLUUUUDDRRUUDDLLDDRRRRUURRRRRRRRLLLLUURRRRUURRLLDDLLUULLUURRLLUURRRRDDRRLLUURRRRDDDDRRDDUULLDDLLDDRRDDUULLUURRUUUUUULLUULLLLUULLUUDDLLRRRRUUUULLUULLDDUURRDDRRRRRRUURRDDUULLLLLLRRRRDDLLLLDDDDDDRRUUUUDDRRUUDDRRUURRUUUURRLLDDDDRRRRUUUUDDLLRRRRUUDDDDRRLLUURRUUDDLLLLDDLLLLLLDDLLLLDDRRRRRRRRLLUURRLLDDDDRRRRLLDDLLRRRRDDDDLLUUDDDDLLDDDDDDUULLRRRRRRLLLLUUUURRUURRUUUULLUULLUULLLLDDLLLLLLLLDDUUUURRLLDDLLDDLLUUUURRLLDDDDDDRRDDRRUUDDLLUULLUULLUUUUDDLLUUDDLLRRDDDDRRLLUULLDDUULLLLRRDDDDRRRRDDUULLLLDDRRDDRRLLLLLLDDUULLRRUULLUUUUDDRRUUDDLLDDRRDDRRRRDDLLRRRRDDLLDDLLRRUULLLLLLUUDDRRRRRRRRUULLUUUULLUUUUUUUULLLLDDUUUUDDRRUUUUUUDDLLUUUUUURRLLDDDDDDRRDDRRRRUULLRRRRUURRRRDDRRLLLLRRUURRUUDDRRLLLLLLLLLLLLUUUUDDLLRRDDRRRRUULLUURRLLDDRRRRRRUURRLLLL
+Correct, you solved lambdaman15 with a score of 9603!
+
+#+end_src
+
+**** DONE lambdaman16
+CLOSED: [2024-06-29 Sat 14:53]
+
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 16
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman16 RRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURRRRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDLLLLUURRUUUULLDDLLUULLDDDDRRDDLLDDDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUURRDDRRUURRRRDDLLDDRRDDLLLLUULLDDDDRRDDLLDDDDRRUURRDDRRUUUULLUURRRRRRDDLLDDDDRRUURRDDRRUUUULLUURRUUUULLDDLLLLUURRUULLUURRRRDDRRUUUULLUURRUUUULLDDLLUULLDDDDRRDDLLLLUULLDDLLLLUURRUULLUURRRRDDRRUUUUUULLDDLLLLUURRUULLUURRRRDDRRUURRRRDDLLDDDDRRUURRDDRRUUUULLUURR
+Correct, you solved lambdaman16 with a score of 8209!
+
+#+end_src
+
+**** lambdaman17
+**** lambdaman18
+**** DONE lambdaman19
+CLOSED: [2024-06-29 Sat 14:53]
+
+#+begin_src shell :results org
+my-make -f ~/src/icfp2024/Make.zsh lambdaman_send 19
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+post: solve lambdaman19 DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUURRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDRRRRRRRRDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLLLLLLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRRRRRRRRRDDDDDDDDDDDDDDDDLLLLLLLLLLLLLLLLDDDDDDDDDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUURRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRUUUUUUUUUUUUUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDRRRRDDDURLLRUUUUUDRLLRDDRRDUUDRLLLLLLLLLLLDDDURLLRUUUUUDRLLRDDLLDUUDLRRRRRRRDDDDDDDDLLLLLLLLDDDDDDDURLLRUURRDUUDRLLLLLDUUDLRRRUUUUUUUUUUUDRLLRDDRRDUUDRLLLLLDUUDLRRRDDDDLLLLDDDURLLRUUUUUDRLLRDDLLDUUDL
+Correct, you solved lambdaman19 with a score of 16364!
+
+#+end_src
+
+**** lambdaman20
+**** lambdaman21
+*** spaceship
+**** Description
+#+begin_src shell :results org
+s="get spaceship"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Welcome to the Spaceship course!
+
+In 2020, most of us have learned how to operate a spaceship. In this course we'll play a small chess-like game featuring the spaceship! The game operates on an infinite 2D chess board, with the spaceship initially located on `(0,0)`. The spaceship has a velocity `vx` and `vy`, which are initially both set to `0`. In each turn the player can increase/decrease each of those numbers by at most one, and then the piece moves `vx` steps to the right and `vy` steps up.
+
+Moves are represented with a single digit, inspired by the old numeric pad on a computer keyboard that we used to have in the old days on Earth. For example, `7` means decreasing `vx` and increasing `vy` by `1`, while `6` means increasing `vx` by `1` and keeping `vy` the same. A path can then be represented by a sequence of digits, e.g. the path `236659` visits, in this order, the following squares: `(0,0) (0,-1) (1,-3) (3,-5) (6,-7) (9,-9) (13,-10)`.
+
+Now the challenge is the following: given a list of squares to be visited, find a sequence of moves that visits all those squares. Your solution may consist of at most `10,000,000` moves.
+
+The following levels are available:
+,* [spaceship1] Best score: 5.
+,* [spaceship2] Best score: 49.
+,* [spaceship3] Best score: 10.
+,* [spaceship4] Best score: 99.
+,* [spaceship5] Best score: 116.
+,* [spaceship6] Best score: 117.
+,* [spaceship7] Best score: 94.
+,* [spaceship8] Best score: 90.
+,* [spaceship9] Best score: 213.
+,* [spaceship10] Best score: 307.
+,* [spaceship11] Best score: 8192.
+,* [spaceship12] Best score: 8192.
+,* [spaceship13] Best score: 23795.
+,* [spaceship14] Best score: 137.
+,* [spaceship15] Best score: 43.
+,* [spaceship16] Best score: 1572.
+,* [spaceship17] Best score: 440.
+,* [spaceship18] Best score: 1959.
+,* [spaceship19] Best score: 13429.
+,* [spaceship20] Best score: 2444.
+,* [spaceship21] Best score: 2740.
+,* [spaceship22] Best score: 1359.
+,* [spaceship23] Best score: 186177.
+,* [spaceship24] Best score: 631912.
+,* [spaceship25] Best score: 742567.
+
+To submit a solution, send an ICFP expression that evaluates to:
+
+```
+solve spaceshipX moves
+```
+
+Your score is the number of moves, so a lower score is better.
+
+#+end_src
+
+**** DONE spaceship1
+CLOSED: [2024-06-30 Sun 15:00]
+#+begin_src shell :results org
+s="get spaceship1"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+1 -1
+1 -3
+2 -5
+2 -8
+3 -10
+
+#+end_src
+
+#+begin_src shell :results org
+s="solve spaceship1 31619"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Correct, you solved spaceship1 with a score of 5!
+
+#+end_src
+
+**** DONE spaceship2
+CLOSED: [2024-06-30 Sun 16:32]
+#+begin_src shell :results org
+s="get spaceship2"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+0 1
+0 1
+-1 2
+-1 4
+0 7
+1 10
+3 12
+5 13
+7 14
+8 14
+8 13
+9 13
+10 14
+11 15
+12 15
+14 16
+17 16
+20 15
+22 15
+23 14
+25 12
+27 10
+29 8
+32 6
+35 4
+37 2
+40 -1
+44 -4
+49 -8
+53 -11
+58 -14
+63 -18
+68 -22
+72 -26
+77 -29
+81 -33
+85 -37
+88 -42
+90 -48
+92 -55
+94 -61
+95 -68
+95 -76
+94 -84
+93 -93
+92 -102
+92 -112
+92 -122
+93 -131
+94 -140
+
+#+end_src
+
+#+begin_src shell :results org
+s="solve spaceship2 8499532374293251556543637625491511281142535957777777777779999999999999999331131111111111333333211132222222222577779999997779888888888888888888212322222222222222222222222597888888888888888888888"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Correct, you solved spaceship2 with a score of 193!
+
+#+end_src
+
+**** DONE spaceship3-24
+CLOSED: [2024-06-30 Sun 19:55]
+
+**** TODO spaceship 25
+post body size exceeded
+**** spaceship donload
+#+begin_src shell :results org
+for i in {24..25}; do
+  s="get spaceship$i"
+  echo $s
+  my-make encode_and_send_and_eval $s > ./problem/spaceship/$i.txt
+done
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get spaceship24
+get spaceship25
+#+end_src
+
+#+begin_src shell :results org
+for i in {1..25}; do
+  s="get spaceship$i"
+  echo $s
+  my-make encode_and_send $s > ./problem/spaceship/$i-raw.txt
+  my-make eval_file ./problem/spaceship/$i-raw.txt > ./problem/spaceship/$i.txt
+done
+#+end_src
+
+#+begin_src shell :results org
+for i in {1..25}; do
+  "Solving
+  my-make spaceship_solve $1 > ./solution/spaceship/$i.txt
+done
+#+end_src
+
+
+#+RESULTS:
+#+begin_src org
+get spaceship1
+get spaceship2
+get spaceship3
+get spaceship4
+get spaceship5
+get spaceship6
+get spaceship7
+get spaceship8
+get spaceship9
+get spaceship10
+get spaceship11
+get spaceship12
+get spaceship13
+get spaceship14
+get spaceship15
+get spaceship16
+get spaceship17
+get spaceship18
+get spaceship19
+get spaceship20
+get spaceship21
+get spaceship22
+get spaceship23
+get spaceship24
+get spaceship25
+#+end_src
+
+*** 3d
+**** Description
+#+begin_src shell :results org
+s="get 3d"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Welcome to the 3D course!
+
+Back in the old days, when the Cult of the Bound Variable still lived on earth, programming languages were still quite primitive. For example, people wrote their programs in 2D, thereby ignoring the third dimension of time. Clearly the spacetime complexity of a program is 3-dimensional, and in this course you will learn to optimize the spacetime volume of your programs.
+
+Below is a complete reference of the 3D language, which is a time-travel-oriented programming language. To keep the spacetime volume as small as possible, your program can use time warping to keep the time-axis small.
+
+# Syntax
+
+A 3D program is a text file that represents a 2D grid of cells. The rows are separated by newlines. Within each row, cells are represented by non-whitespace tokens separated by whitespace.
+
+It is human-friendly but not mandatory to keep the columns aligned by adding extra whitespace between cells; each row is processed separately. Rows do not have to have the same length; short rows are assumed to be left-aligned: empty on the right.
+
+## Available tokens
+
+,* `.` represents an empty cell
+,* an integer between `-99` and `99` (inclusive) represents that integer
+,* the following characters
+  `<`, `>`, `^`, `v`, `+`, `-`, `*`, `/`, `%`, `@`, `=`, `#`, `S`, `A`, `B`
+  represent operators.
+  See [the operator reference](#operator-reference) for their meaning.
+
+# Semantics
+
+The board is an infinite 2D grid of cells. Each cell is either empty or contains a value. A value is either an arbitrarily sized integer or an operator.
+
+Programs cannot contain arbitrarily sized integer literals. Integer literals can only range between `-99` and `99`, inclusive. This is a source-code-only restriction. At runtime, programs are free to compute with integers of arbitrary size.
+
+## Basic 2D reduction
+
+Time flows in discrete units, called ticks. The initial board is identical to the source code and its time coordinate is `t=1`. With each tick, we perform one round of reductions across the whole board simultaneously.
+
+[The operator reference](#operator-reference) defines the reduction rules of all operators. Generally, all operators perform local rewriting on their surroundings. For example, the "move right" operator `>` rewrites `x > .` to `. > x`.
+
+Operators are values, too, so `+ > .` reduces to `. > +`. This way, it's also possible to shuffle operators around.
+
+Binary operators, like `+`, `*`, or `-`, rewrite like this:
+```
+. y .     .  .   .
+x - .  ~> .  -  x-y
+. . .     . x-y  .
+```
+
+Operators `A` and `B` are replaced with the input values (if any) after parsing. This mechanism is used to give different inputs to your program.
+
+There is operator `S`, which you can overwrite to terminate the program and submit the answer. It is an error to submit multiple different values, submitting the same value simultaneously multiple times is fine.
+
+Some reduction principles:
+
+1. If the preconditions of an operator are not met, reduction simply does not take place. For example, if a binary operator
+   has only one operand available, things stay as they are until the other operand arrives.
+
+2. Outputs of operators overwrite the output cells.
+
+   `1 > +` reduces to `. > 1`
+
+3. Reading a value removes/consumes it.
+
+4. Two operators can read from the same input cell at the same time. Both operators receive a copy of the input value before it's removed from the board.
+
+   `. < 6 > .` reduces to `6 < . > 6`
+
+5. Conflicting writes into the same cell like `3 > . < 3` or `3 > . < 4` are disallowed and will crash the simulation.
+
+6. In every tick, all reads (and removals) happen before all the writes.
+
+   `1 > 2 > .` reduces to `. > 1 > 2`
+
+### Operator reference
+
+In the diagrams below, the symbol `.` generally stands for an empty cell or a non-empty cell containing any value. We use the dot instead of metavariables for readability.
+
+Arrows move values of any type (integers or operators).
+```
+. < x   ~>   x < .         x > .   ~>   . > x
+
+
+  .            x             x            .
+  ^     ~>     ^             v     ~>     v
+  x            .             .            x
+```
+
+Binary arithmetic operators reduce only for integer arguments. They write their outputs both to the right and below at the same time.
+```
+. y .        .  .  .       . y .        .  .  .
+x + .   ~>   .  + x+y      x * .   ~>   .  * x*y
+. . .        . x+y .       . . .        . x*y .
+
+
+. y .        .  .  .
+x - .   ~>   .  - x-y
+. . .        . x-y .
+```
+
+Operators `/` and `%` represent the quotient and remainder operations: operator `/` truncates the result towards zero;
+`x%y` has the same sign as `x`.
+
+```
+. y .        .  .  .       . y .        .  .  .
+x / .   ~>   .  / x/y      x % .   ~>   .  % x%y
+. . .        . x/y .       . . .        . x%y .
+```
+
+Equality comparison reduces only if its two operands are equal. It works for both integers and operators.
+
+```
+. x .        . . .         . y .        . y .
+x = .   ~>   . = x         x = .   ~>   x = .  (if x!=y)
+. . .        . x .         . . .        . . .
+```
+
+Dually, the not-equal operator reduces only when the operands are not equal:
+```
+. x .        . x .         . y .        . . .
+x # .   ~>   x # .         x # .   ~>   . # y  (if x!=y)
+. . .        . . .         . . .        . x .
+```
+
+Operators `A` and `B` have no reduction rules defined. They may appear in the program code but they are replaced with the input values (if any) immediately after parsing.
+
+Operator `S` ("submit") does not have any reduction rules defined, either. The program submits its results by overwriting operator `S` with the result value.
+
+The time warp operator is described in [its own section](#time-warp).
+
+## Scoring
+
+Your score is the total spacetime volume of the program:
+,* maximal X coordinate ever used minus minimal X coordinate ever used + 1
+,* times (maximal Y coordinate ever used minus minimal Y coordinate ever used + 1)
+,* times (maximal T coordinate ever used minus minimal T coordinate ever used + 1)
+
+In this definition, "ever used" ranges across the entire simulation
+and across all time warps.
+
+## Limits
+
+After `1_000_000` ticks, the program is terminated without submitting a value, regardless of its current time coordinate.
+
+## Time warp
+
+You may be able to reduce the time complexity of your program, defined as the maximum time coordinate reached, using time travel. Time travel is triggered with the (quaternary) warp operator:
+
+```
+ .  v  .
+dx  @ dy
+ . dt  .
+```
+
+This rolls back the history of the board by `dt` time steps, writes value `v` into the cell with coordinates `(-dx, -dy)` relative to the `@` operator (note the negative signs!) on this past board, which means that the time coordinate of the target board is unchanged but the content is mutated. Then simulation then restarts from the modified point onward.
+
+The minimal value of `dt` is `1`, which means stepping back one time step.
+
+```
+2 > . .        . > 2 .        2 > . .
+. 2 @ 0   ~>   . 2 @ 0   ~>   2 2 @ 0
+. . 1 .        . . 1 .        . . 1 .
+```
+
+### Time travel principles
+
+1. Time is discrete and starts with `t=1` with the initial board.
+
+2. Each tick, time `t` increases by 1, and the board is changed according to the action of all its operators.
+
+3. The time warp operator rolls back time to any point in the past, up to and including `t=1` (the initial board).
+
+4. Time warping with `dt=0` is not allowed.
+
+4. After time warping to time `t`, the history before `t` is preserved but the future after `t` is discarded and its new version will be recomputed again.
+
+5. If two different warp operators attempt to write different values into the same destination cell at the same destination time, the simulation will crash.
+
+   Warping the same value into the same cell is fine, as is warping different values into different cells. (This is different from basic 2D reduction, which does not allow writing the same value into the same cell by two different operators.)
+
+6. If two different warp operators attempt to travel to different times in the same tick, the simulation will crash.
+
+7. As soon as the submit operator is overwritten, the entire simulation stops.
+
+   A board can contain multiple submit operators but if more than one are overwritten at the same time, the simulation will crash.
+
+8. If no operator on a board can reduce, the simulation terminates without submitting an answer.
+
+# Example
+
+As an example, the following program computes `A * B` by time-looping `B` times, adding `A` every time (for the sake of the example; of course there is also is the `*` operator):
+
+```
+. . . . 0 . . . .
+. B > . = . . . .
+. v 1 . . > . . .
+. . - . . . + S .
+. . . . . ^ . . .
+. . v . . 0 > . .
+. . . . . . A + .
+. 1 @ 6 . . < . .
+. . 3 . 0 @ 3 . .
+. . . . . 3 . . .
+```
+
+When running this for `A = 3` and `B = 4`, this program has a spacetime volume of `320` (`vx * vy * vt = 8 * 10 * 4 = 320`). You can see the execution trace at [3d-example].
+
+# Problems
+
+The following problems are available:
+
+,* [3d1] Best score: 2982.
+,* [3d2] Best score: 1920.
+,* [3d3] Best score: 1314.
+,* [3d4] Best score: 2080.
+,* [3d5] Best score: 3456.
+,* [3d6] Best score: 3840.
+,* [3d7] Best score: 8640.
+,* [3d8] Best score: 43680.
+,* [3d9] Best score: 17545.
+,* [3d10] Best score: 40261.
+,* [3d11] Best score: 182091.
+,* [3d12] Best score: 64260.
+
+To submit a solution, send an ICFP expression that evaluates to `solve 3dX` followed by your 3D program, e.g.:
+
+```
+solve 3dX
+. . . . .
+. . . . .
+. . . . .
+```
+
+Your score is the sum of the spacetime complexity of your submission over the secret test cases, so a lower score is better.
+
+# Testing
+
+You can test your 3D programs by sending:
+
+```
+test 3d A B
+. . . . .
+. . . . .
+. . . . .
+```
+
+where `A` and `B` must be integer values which are given to the corresponding inputs. Unlike the `solve` command, the `test` command has a tick limit of `4`.
+
+
+#+end_src
+**** 3d test
+#+begin_example
+A B S > . > . > . > . > .
+. . @ > . > . > . > . > .
+
+#+end_example
+**** 3d-example
+
+#+begin_src shell :results org
+s="get 3d-example"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Execution trace with `A = 3` and `B = 4`:
+
+```
+[t=1, x=1, y=1]
+. . . 0 . . .
+4 > . = . . .
+v 1 . . > . .
+. - . . . + S
+. . . . ^ . .
+. v . . 0 > .
+. . . . . 3 +
+1 @ 6 . . < .
+. 3 . 0 @ 3 .
+. . . . 3 . .
+
+[t=2, x=1, y=1]
+. . . 0 . . .
+. > 4 = . . .
+v 1 . . > . .
+4 - . . 0 + S
+. . . . ^ . .
+. v . . . > 0
+. . . . . 3 +
+1 @ 6 . . < .
+. 3 . 0 @ 3 .
+. . . . 3 . .
+
+[t=3, x=1, y=1]
+. . . 0 . . . .
+. > 4 = . . . .
+v . . . > . . .
+. - 3 . 0 + S .
+. 3 . . ^ . . .
+. v . . . > . .
+. . . . . . + 3
+1 @ 6 . . < 3 .
+. 3 . 0 @ 3 . .
+. . . . 3 . . .
+
+[t=4, x=1, y=1]
+. . . 0 . . . .
+. > 4 = . . . .
+v . . . > . . .
+. - 3 . 0 + S .
+. . . . ^ . . .
+. v . . . > . .
+. 3 . . . . + 3
+1 @ 6 . 3 < . .
+. 3 . 0 @ 3 . .
+. . . . 3 . . .
+
+[t=1, x=1, y=1]
+. . . 0 . . .
+3 > . = . . .
+v 1 . . > . .
+. - . . . + S
+. . . . ^ . .
+. v . . 3 > .
+. . . . . 3 +
+1 @ 6 . . < .
+. 3 . 0 @ 3 .
+. . . . 3 . .
+
+[t=2, x=1, y=1]
+. . . 0 . . .
+. > 3 = . . .
+v 1 . . > . .
+3 - . . 3 + S
+. . . . ^ . .
+. v . . . > 3
+. . . . . 3 +
+1 @ 6 . . < .
+. 3 . 0 @ 3 .
+. . . . 3 . .
+
+[t=3, x=1, y=1]
+. . . 0 . . . .
+. > 3 = . . . .
+v . . . > . . .
+. - 2 . 3 + S .
+. 2 . . ^ . . .
+. v . . . > . .
+. . . . . . + 6
+1 @ 6 . . < 6 .
+. 3 . 0 @ 3 . .
+. . . . 3 . . .
+
+[t=4, x=1, y=1]
+. . . 0 . . . .
+. > 3 = . . . .
+v . . . > . . .
+. - 2 . 3 + S .
+. . . . ^ . . .
+. v . . . > . .
+. 2 . . . . + 6
+1 @ 6 . 6 < . .
+. 3 . 0 @ 3 . .
+. . . . 3 . . .
+
+[t=1, x=1, y=1]
+. . . 0 . . .
+2 > . = . . .
+v 1 . . > . .
+. - . . . + S
+. . . . ^ . .
+. v . . 6 > .
+. . . . . 3 +
+1 @ 6 . . < .
+. 3 . 0 @ 3 .
+. . . . 3 . .
+
+[t=2, x=1, y=1]
+. . . 0 . . .
+. > 2 = . . .
+v 1 . . > . .
+2 - . . 6 + S
+. . . . ^ . .
+. v . . . > 6
+. . . . . 3 +
+1 @ 6 . . < .
+. 3 . 0 @ 3 .
+. . . . 3 . .
+
+[t=3, x=1, y=1]
+. . . 0 . . . .
+. > 2 = . . . .
+v . . . > . . .
+. - 1 . 6 + S .
+. 1 . . ^ . . .
+. v . . . > . .
+. . . . . . + 9
+1 @ 6 . . < 9 .
+. 3 . 0 @ 3 . .
+. . . . 3 . . .
+
+[t=4, x=1, y=1]
+. . . 0 . . . .
+. > 2 = . . . .
+v . . . > . . .
+. - 1 . 6 + S .
+. . . . ^ . . .
+. v . . . > . .
+. 1 . . . . + 9
+1 @ 6 . 9 < . .
+. 3 . 0 @ 3 . .
+. . . . 3 . . .
+
+[t=1, x=1, y=1]
+. . . 0 . . .
+1 > . = . . .
+v 1 . . > . .
+. - . . . + S
+. . . . ^ . .
+. v . . 9 > .
+. . . . . 3 +
+1 @ 6 . . < .
+. 3 . 0 @ 3 .
+. . . . 3 . .
+
+[t=2, x=1, y=1]
+. . . 0 . . .
+. > 1 = . . .
+v 1 . . > . .
+1 - . . 9 + S
+. . . . ^ . .
+. v . . . > 9
+. . . . . 3 +
+1 @ 6 . . < .
+. 3 . 0 @ 3 .
+. . . . 3 . .
+
+[t=3, x=1, y=1]
+. . . 0 . .  .  .
+. > 1 = . .  .  .
+v . . . > .  .  .
+. - 0 . 9 +  S  .
+. 0 . . ^ .  .  .
+. v . . . >  .  .
+. . . . . .  + 12
+1 @ 6 . . < 12  .
+. 3 . 0 @ 3  .  .
+. . . . 3 .  .  .
+
+[t=4, x=1, y=1]
+. . . 0  . . .  .
+. > 1 =  . . .  .
+v . . .  > . .  .
+. - 0 .  9 + S  .
+. . . .  ^ . .  .
+. v . .  . > .  .
+. 0 . .  . . + 12
+1 @ 6 . 12 < .  .
+. 3 . 0  @ 3 .  .
+. . . .  3 . .  .
+
+[t=1, x=1, y=1]
+. . . 0  . . .
+0 > . =  . . .
+v 1 . .  > . .
+. - . .  . + S
+. . . .  ^ . .
+. v . . 12 > .
+. . . .  . 3 +
+1 @ 6 .  . < .
+. 3 . 0  @ 3 .
+. . . .  3 . .
+
+[t=2, x=1, y=1]
+. . . 0  . .  .
+. > 0 =  . .  .
+v 1 . .  > .  .
+0 - . . 12 +  S
+. . . .  ^ .  .
+. v . .  . > 12
+. . . .  . 3  +
+1 @ 6 .  . <  .
+. 3 . 0  @ 3  .
+. . . .  3 .  .
+
+[t=3, x=1, y=2]
+.  >  . =  0 .  .  .
+v  .  . 0  > .  .  .
+.  - -1 . 12 +  S  .
+. -1  . .  ^ .  .  .
+.  v  . .  . >  .  .
+.  .  . .  . .  + 15
+1  @  6 .  . < 15  .
+.  3  . 0  @ 3  .  .
+.  .  . .  3 .  .  .
+
+[t=4, x=1, y=2]
+.  >  . =  0 . .  .
+v  .  . .  > 0 .  .
+.  - -1 . 12 + S  .
+.  .  . .  ^ . .  .
+.  v  . .  . > .  .
+. -1  . .  . . + 15
+1  @  6 . 15 < .  .
+.  3  . 0  @ 3 .  .
+.  .  . .  3 . .  .
+
+Submitted answer: 12
+Volume spent: 320
+```
+
+#+end_src
+
+**** 3d 1-12
+
+**** 3d7
+#+begin_src shell :results org
+s="get 3d7"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+#+end_src
+
+**** 3d5
+#+begin_src shell :results org
+s="get 3d6"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+# Input
+  `2 <= A <= 500`
+
+# Output
+  `1` if `A` is a prime number, and `0` otherwise.
+
+# Example
+  ,* `A = 5`
+    `Answer = 1`
+  ,* `A = 4`
+    `Answer = 0`
+
+#+end_src
+
+**** 3d5
+#+begin_src shell :results org
+s="get 3d5"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+# Input
+  `1 <= A <= 500` and `1 <= B <= 500`
+
+# Output
+  The least common multiple (LCM) of `A` and `B`, e.g. the smallest positive number that is divisible by both `A` and `B`.
+
+# Example
+  ,* `A = 3`
+    `B = 7`
+    `Answer = 21`
+  ,* `A = 2`
+    `B = 6`
+    `Answer = 6`
+
+#+end_src
+
+**** 3d4
+#+begin_src shell :results org
+s="get 3d4"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+# Input
+  `-100 <= A <= 100` and `-100 <= B <= 100`
+
+# Output
+  The maximum of `A` and `B`.
+
+# Example
+  ,* `A = 3`
+    `B = 7`
+    `Answer = 7`
+  ,* `A = -2`
+    `B = -6`
+    `Answer = -2`
+
+#+end_src
+
+**** DONE 3d3
+CLOSED: [2024-07-01 Mon 19:45]
+#+begin_src shell :results org
+s="get 3d3"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+# Input
+  `-100 <= A <= 100`
+
+# Output
+  The sign of `A`, which is `-1` for negative numbers, `0` for `0`, and `1` for positive numbers.
+
+# Example
+  ,* `A = 3`
+    `Answer = 1`
+  ,* `A = -6`
+    `Answer = -1`
+
+#+end_src
+
+**** DONE 3d2
+CLOSED: [2024-07-01 Mon 19:19]
+#+begin_src shell :results org
+s="get 3d2"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+# Input
+  `-100 <= A <= 100`
+
+# Output
+  The absolute value of `A`.
+
+# Example
+  ,* `A = 3`
+    `Answer = 3`
+  ,* `A = -6`
+    `Answer = 6`
+
+#+end_src
+
+**** DONE 3d1
+CLOSED: [2024-07-01 Mon 18:08]
+#+begin_src shell :results org
+s="get 3d1"
+my-make post_string $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+# Input
+  `1 <= A <= 100`
+
+# Output
+  The factorial of `A`.
+  `A! = 1 * 2 * .. * (A - 1) * A`
+
+# Example
+  ,* `A = 5`
+    `Answer = 120`
+
+#+end_src
+
+*** efficiency
+**** Description
+:PROPERTIES:
+:ID:       3b78c5ad-c65b-4b27-8221-c2b92791f42a
+:END:
+#+begin_src shell :results org
+s="get efficiency"
+my-make encode_and_send_and_decode $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+Welcome to the efficiency course!
+
+In this course, your ICFP knowledge will be put to the test. To communicate with the rest of the solar system, the Cult uses their Macroware Insight evaluator. However, the School of the Bound Variable also possesses a quantum computer, on which more complex expressions can be evaluated. As the energy consumption of this quantum computer is getting out of hand, students must learn to find the evaluation result of such complex expressions with other means.
+
+# Tip of the day
+
+Did you know that the binary call-by-name application operator `$` has two siblings? The binary operator `~` (lazy application) is a call-by-need variant on the `$` operator, and the binary operator `!` (strict application) is the call-by-value variant. Smart usage of these can help you save many beta reductions!
+
+# Problems
+
+The following assignments are available:
+
+,* [efficiency1] At least one other team solved it.
+,* [efficiency2] At least one other team solved it.
+,* [efficiency3] At least one other team solved it.
+,* [efficiency4] At least one other team solved it.
+,* [efficiency5] At least one other team solved it.
+,* [efficiency6] At least one other team solved it.
+,* [efficiency7] At least one other team solved it.
+,* [efficiency8] At least one other team solved it.
+,* [efficiency9] At least one other team solved it.
+,* [efficiency10] At least one other team solved it.
+,* [efficiency11] At least one other team solved it.
+,* [efficiency12] At least one other team solved it.
+,* [efficiency13] At least one other team solved it.
+
+Each of such ICFPs will eventually evaluate to an integer, which is the answer to the given assignment. However, students may need more than just an efficient evaluator in order to get the right answer (and likely don't possess a quantum computer). To submit an answer to a test, send:
+
+```
+solve efficiencyX answer
+```
+
+e.g. if the answer to the second assignment is `42`, then send `solve efficiency2 42`.
+
+#+end_src
+
+**** DONE efficiency1
+CLOSED: [2024-06-30 Sun 13:48]
+
+#+begin_src shell :results org
+s="get efficiency1"
+my-make encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+B$ L! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! B$ v! I" L! B+ B+ v! v! B+ v! v!
+#+end_src
+
+#+begin_src shell :results org
+s="solve efficiency1 17592186044416"
+my-make encode_and_send_and_eval $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+"Correct, you solved efficiency1!
+"
+#+end_src
+
+**** DONE efficiency2
+CLOSED: [2024-06-30 Sun 14:07]
+
+#+begin_src shell :results org
+s="get efficiency2"
+my-make encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+B+ I7c B* B$ B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L% ? B= v% I! I" B+ I" B$ v$ B- v% I" I":c1+0 I!
+#+end_src
+
+#+begin_src shell :results org
+s="solve efficiency2 2134"
+my-make encode_and_send_and_eval $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+"Correct, you solved efficiency2!
+"
+#+end_src
+
+**** DONE efficiency3
+CLOSED: [2024-06-30 Sun 14:41]
+
+#+begin_src shell :results org
+s="get efficiency3"
+echo $s
+my-make encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get efficiency3
+B+ I7c B* B$ B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L% ? B= v% I! I" B+ I" B$ v$ B- v% I" I":c1+0 I"
+#+end_src
+
+= 9345873499 + 2134 + 1 => 9,345,875,634
+
+#+begin_src shell :results org
+s="solve efficiency3 9345875634"
+my-make encode_and_send_and_eval $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+"Correct, you solved efficiency3!
+"
+#+end_src
+
+**** DONE efficiency4
+CLOSED: [2024-06-30 Sun 14:47]
+
+#+begin_src shell :results org
+s="get efficiency4"
+echo $s
+my-make encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get efficiency4
+B$ B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L% ? B< v% I# I" B+ B$ v$ B- v% I" B$ v$ B- v% I# II
+#+end_src
+
+Fibonacchi:
+39	63245986
+40	102334155
+41	165580141
+
+answer: Fib(41)
+
+#+begin_src shell :results org
+# s="solve efficiency4 102334155"
+s="solve efficiency4 165580141"
+my-make encode_and_send_and_eval $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+"Correct, you solved efficiency4!
+"
+#+end_src
+
+**** TODO efficiency5
+
+#+begin_src shell :results org
+s="get efficiency5"
+echo $s
+my-make encode_and_send $s
+#+end_src
+
+#+RESULTS:
+#+begin_src org
+get efficiency5
+B$ L' B$ L( B$ B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L% ? B& B> v% I"41= B& B$ v' v% B$ v( B+ v% I" v% B$ v$ B+ v% I" I# B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L% ? B= v% I" T ? B= B% v% I# I" F B$ v$ B/ v% I# L& B$ B$ L" B$ L# B$ v" B$ v# v# L# B$ v" B$ v# v# L$ L% ? B= v% v& T ? B= B% v& v% I! F B$ v$ B+ v% I" I#
+#+end_src
